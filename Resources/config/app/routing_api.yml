@@ -1,0 +1,3 @@
+pintushi_grid_gridview_api:
+    resource: '@PintushiGridBundle/Controller/Api/Rest/GridViewController.php'
+    type: rest

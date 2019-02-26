@@ -1,0 +1,22 @@
+acls:
+    pintushi_grid_gridview_view:
+        type: entity
+        class: PintushiGridBundle:GridView
+        permission: VIEW
+        group_name: ""
+
+    pintushi_grid_gridview_publish:
+        label: oro.grid.action.gridview_create_public.label
+        description: oro.grid.action.gridview_create_public.description
+        type: action
+        group_name: ""
+        bindings: ~
+        category: "application"
+
+    pintushi_grid_gridview_export:
+        label: oro.grid.action.gridview_export.label
+        description: oro.grid.action.gridview_export.description
+        type: action
+        group_name: ""
+        bindings: ~
+        category: "application"

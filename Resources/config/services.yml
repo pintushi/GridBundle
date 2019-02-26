@@ -1,0 +1,326 @@
+parameters:
+    pintushi_grid.datagrid.base.class:                             Pintushi\Bundle\GridBundle\Datagrid\Datagrid
+    pintushi_grid.extension.acceptor.class:                        Pintushi\Bundle\GridBundle\Extension\Acceptor
+
+    pintushi_grid.datagrid.name_strategy.class:                    Pintushi\Bundle\GridBundle\Datagrid\NameStrategy
+    pintushi_grid.datagrid.manager.class:                          Pintushi\Bundle\GridBundle\Datagrid\Manager
+    pintushi_grid.datagrid.builder.class:                          Pintushi\Bundle\GridBundle\Datagrid\Builder
+    pintushi_grid.datagrid.parameters.class:                       Pintushi\Bundle\GridBundle\Datagrid\ParameterBag
+    pintushi_grid.datagrid.request_parameters_factory.class:       Pintushi\Bundle\GridBundle\Datagrid\RequestParameterBagFactory
+    pintushi_grid.datagrid.guesser.class:                          Pintushi\Bundle\GridBundle\Datagrid\DatagridGuesser
+    pintushi_grid.datagrid.column_options_guesser.class:           Pintushi\Bundle\GridBundle\Datagrid\DefaultColumnOptionsGuesser
+
+    pintushi_grid.provider.resolver.class:                         Pintushi\Bundle\GridBundle\Provider\SystemAwareResolver
+
+    pintushi_grid.configuration.provider.class:                    Pintushi\Bundle\GridBundle\Provider\ConfigurationProvider
+    pintushi_grid.configuration.provider.chain.class:              Pintushi\Bundle\GridBundle\Provider\ChainConfigurationProvider
+    pintushi_grid.event.dispatcher.class:                          Pintushi\Bundle\GridBundle\Event\EventDispatcher
+    pintushi_grid.event_listener.datasource_bind_parameters.class: Pintushi\Bundle\GridBundle\EventListener\DatasourceBindParametersListener
+    pintushi_grid.event_listener.ormdatasource_acl.class:          Pintushi\Bundle\GridBundle\EventListener\OrmDatasourceAclListener
+    pintushi_grid.event_listener.row_selection.class:              Pintushi\Bundle\GridBundle\EventListener\RowSelectionListener
+    pintushi_grid.event_listener.cell_selection.class:             Pintushi\Bundle\GridBundle\EventListener\CellSelectionListener
+    pintushi_grid.event_listener.grid_views_load.class:            Pintushi\Bundle\GridBundle\EventListener\GridViewsLoadListener
+    pintushi_grid.form.type.grid_view_type.class:                  Pintushi\Bundle\GridBundle\Form\Type\GridViewType
+    pintushi_grid.form.type.sorting_type.class:                    Pintushi\Bundle\GridBundle\Form\Type\GridSortingType
+    pintushi_grid.grid_view.manager.api.class:                     Pintushi\Bundle\GridBundle\Entity\Manager\GridViewApiEntityManager
+    pintushi_grid.grid_view.entity.class:                          Pintushi\Bundle\GridBundle\Entity\GridView
+    pintushi_grid.grid_view_user.entity.class:                     Pintushi\Bundle\GridBundle\Entity\GridViewUser
+    pintushi_grid.grid_view.form.handler.api.class:                Pintushi\Bundle\GridBundle\Form\Handler\GridViewApiHandler
+    pintushi_grid.choice.helper.class:                             Pintushi\Bundle\GridBundle\Tools\ChoiceFieldHelper
+
+    pintushi_grid.datagrid.inline_edit_column_options_guesser.class:          Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptionsGuesser
+    pintushi_grid.datagrid.inline_edit_column_options.text_guesser.class:     Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\TextGuesser
+    pintushi_grid.datagrid.inline_edit_column_options.choices_guesser.class:  Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\ChoicesGuesser
+    pintushi_grid.datagrid.inline_edit_column_options.relation_guesser.class: Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\RelationGuesser
+    pintushi_grid.datagrid.inline_edit_column_options.multi_select_guesser.class: Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\MultiSelectGuesser
+    pintushi_grid.datagrid.inline_edit_column_options.multi_relation_guesser.class: Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\MultiRelationGuesser
+
+    pintushi_grid.datagrid.board.processor.default.class: Pintushi\Bundle\GridBundle\Extension\Board\Processor\DefaultProcessor
+    pintushi_grid.datagrid.board.restriction_manager.class: Pintushi\Bundle\GridBundle\Extension\Board\RestrictionManager
+
+services:
+    pintushi_grid.datagrid.manager:
+        class: '%pintushi_grid.datagrid.manager.class%'
+        arguments:
+            - '@pintushi_grid.configuration.provider.chain'
+            - '@pintushi_grid.datagrid.builder'
+            - '@pintushi_grid.datagrid.request_parameters_factory'
+            - '@pintushi_grid.datagrid.name_strategy'
+
+    pintushi_grid.datagrid.name_strategy:
+        class: '%pintushi_grid.datagrid.name_strategy.class%'
+        arguments:
+            - '@request_stack'
+
+    pintushi_grid.datagrid.manager.link:
+        class: Oro\Component\DependencyInjection\ServiceLink
+        tags:
+            - { name: service_link,  service: pintushi_grid.datagrid.manager }
+
+    pintushi_grid.event.dispatcher:
+        class: '%pintushi_grid.event.dispatcher.class%'
+        arguments: ['@event_dispatcher']
+
+    pintushi_grid.datagrid.builder:
+        class: '%pintushi_grid.datagrid.builder.class%'
+        arguments:
+            - '%pintushi_grid.datagrid.base.class%'
+            - '%pintushi_grid.extension.acceptor.class%'
+            - '@pintushi_grid.event.dispatcher'
+        lazy: true
+
+    pintushi_grid.datagrid.request_parameters_factory:
+        class: '%pintushi_grid.datagrid.request_parameters_factory.class%'
+        arguments:
+            - '%pintushi_grid.datagrid.parameters.class%'
+            - '@request_stack'
+
+    pintushi_grid.datagrid.guesser:
+        class: '%pintushi_grid.datagrid.guesser.class%'
+        arguments:
+            - '@service_container'
+            - [] # a list of service ids of column options guessers
+
+    pintushi_grid.datagrid.column_options_guesser:
+        class: '%pintushi_grid.datagrid.column_options_guesser.class%'
+        tags:
+            - { name: pintushi_grid.column_options_guesser }
+
+    pintushi_grid.provider.resolver:
+        class: '%pintushi_grid.provider.resolver.class%'
+        arguments:
+            - '@service_container'
+
+    pintushi_grid.configuration.provider:
+        class: '%pintushi_grid.configuration.provider.class%'
+        arguments:
+            - '@pintushi_grid.provider.resolver'
+            - '@pintushi_grid.configuration_provider.cache'
+        tags:
+            - { name: pintushi_grid.configuration.provider, priority: -10 }
+
+    pintushi_grid.configuration_provider.cache:
+        public: false
+        autowire: false
+        autoconfigure: false
+        parent: doctrine_cache.abstract.chain
+        calls:
+            - [ setNamespace, [ 'pintushi_grid_configuration' ] ]
+
+    pintushi_grid.configuration.provider.chain:
+        class: '%pintushi_grid.configuration.provider.chain.class%'
+
+    pintushi_grid.twig.datagrid:
+        class: 'Pintushi\Bundle\GridBundle\Twig\DataGridExtension'
+        public: false
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }
+
+    pintushi_grid.event_listener.datasource_bind_parameters:
+        class: '%pintushi_grid.event_listener.datasource_bind_parameters.class%'
+        tags:
+            - { name: kernel.event_listener, event: pintushi_grid.datagrid.build.after, method: onBuildAfter, priority: 255 }
+
+    pintushi_grid.event_listener.ormdatasource_acl:
+        class: '%pintushi_grid.event_listener.ormdatasource_acl.class%'
+        arguments:
+            - '@pintushi_security.acl_helper'
+        tags:
+            - { name: kernel.event_listener, event: pintushi_grid.orm_datasource.result.before, method: onResultBefore }
+
+    pintushi_grid.event_listener.row_selection:
+        class: '%pintushi_grid.event_listener.row_selection.class%'
+        arguments:
+            - '@pintushi_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: pintushi_grid.datagrid.build.after, method: onBuildAfter, priority: 255 }
+
+    pintushi_grid.event_listener.cell_selection:
+        class: '%pintushi_grid.event_listener.cell_selection.class%'
+        tags:
+            - { name: kernel.event_listener, event: pintushi_grid.datagrid.build.after, method: onBuildAfter, priority: 255 }
+
+    pintushi_grid.event_listener.mixin:
+        class: Pintushi\Bundle\GridBundle\EventListener\MixinListener
+        arguments:
+            - '@pintushi_grid.mixin_configuration.helper'
+        tags:
+            - { name: kernel.event_listener, event: pintushi_grid.datagrid.build.pre, method: onPreBuild, priority: 255 }
+
+    pintushi_grid.event_listener.grid_views_load:
+        class: '%pintushi_grid.event_listener.grid_views_load.class%'
+        arguments:
+            - '@doctrine'
+            - '@security.authorization_checker'
+            - '@pintushi_security.token_accessor'
+            - '@pintushi_security.acl_helper'
+            - '@translator'
+            - '@pintushi_grid.grid_view.manager'
+            - '@pintushi_grid.appearance_type.manager'
+        tags:
+            - { name: kernel.event_listener, event: pintushi_grid.grid_views_load, method: onViewsLoad }
+
+    pintushi_grid.form.type.grid_view_type:
+        class: '%pintushi_grid.form.type.grid_view_type.class%'
+        tags:
+            - { name: form.type, alias: pintushi_grid_grid_view }
+
+    pintushi_grid.form.type.sorting_type:
+        class: '%pintushi_grid.form.type.sorting_type.class%'
+        tags:
+            - { name: form.type, alias: pintushi_grid_sorting }
+
+    pintushi_grid.grid_view.manager:
+        class: Pintushi\Bundle\GridBundle\Entity\Manager\GridViewManager
+        arguments:
+            - '@pintushi_security.acl_helper'
+            - '@doctrine'
+            - '@pintushi_grid.datagrid.manager'
+
+    pintushi_grid.appearance_type.manager:
+        class: Pintushi\Bundle\GridBundle\Entity\Manager\AppearanceTypeManager
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pintushi_grid.grid_view.manager.link:
+        class: Oro\Component\DependencyInjection\ServiceLink
+        tags:
+            - { name: service_link,  service: pintushi_grid.grid_view.manager }
+
+    # pintushi_grid.grid_view.manager.api:
+    #     class: '%pintushi_grid.grid_view.manager.api.class%'
+    #     parent: oro_soap.manager.entity_manager.abstract
+    #     arguments:
+    #         - '%pintushi_grid.grid_view.entity.class%'
+    #         - '@doctrine.orm.entity_manager'
+    #         - '@pintushi_grid.grid_view.manager'
+
+    pintushi_grid.form.grid_view.api:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - ~
+            - Pintushi\Bundle\GridBundle\Form\Type\GridViewType
+
+    pintushi_grid.grid_view.form.handler.api:
+        class: '%pintushi_grid.grid_view.form.handler.api.class%'
+        arguments:
+            - '@pintushi_grid.form.grid_view.api'
+            - '@request_stack'
+            - '@doctrine'
+            - '@pintushi_grid.grid_view.manager'
+            - '@security.token_storage'
+
+    pintushi_grid.datagrid.inline_edit_column_options_guesser:
+        class: '%pintushi_grid.datagrid.inline_edit_column_options_guesser.class%'
+        arguments:
+            - '@validator'
+
+    pintushi_grid.datagrid.inline_edit_column_options.text_guesser:
+        class: '%pintushi_grid.datagrid.inline_edit_column_options.text_guesser.class%'
+        arguments:
+            - '@pintushi_entity.doctrine_helper'
+        tags:
+            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 100 }
+
+    pintushi_grid.datagrid.inline_edit_column_options.choices_guesser:
+        class: '%pintushi_grid.datagrid.inline_edit_column_options.choices_guesser.class%'
+        arguments:
+            - '@pintushi_entity.doctrine_helper'
+            - '@pintushi_grid.choice.helper'
+        tags:
+            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 90 }
+
+    pintushi_grid.datagrid.inline_edit_column_options.multi_select_guesser:
+        class: '%pintushi_grid.datagrid.inline_edit_column_options.multi_select_guesser.class%'
+        arguments:
+            - '@pintushi_entity.doctrine_helper'
+            - '@pintushi_grid.choice.helper'
+        tags:
+            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 92 }
+
+    pintushi_grid.datagrid.inline_edit_column_options.relation_guesser:
+        class: '%pintushi_grid.datagrid.inline_edit_column_options.relation_guesser.class%'
+        tags:
+            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 95 }
+
+    pintushi_grid.datagrid.inline_edit_column_options.multi_relation_guesser:
+        class: '%pintushi_grid.datagrid.inline_edit_column_options.multi_relation_guesser.class%'
+        tags:
+            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 97 }
+
+
+    pintushi_grid.grid_configuration.helper:
+        class: Pintushi\Bundle\GridBundle\Tools\GridConfigurationHelper
+        arguments:
+            - '@pintushi_entity.orm.entity_class_resolver'
+
+    pintushi_grid.mixin_configuration.helper:
+        class: Pintushi\Bundle\GridBundle\Tools\MixinConfigurationHelper
+        arguments:
+             - '@pintushi_grid.configuration.provider'
+
+    pintushi_grid.datagrid.appearance.configuration:
+        class: Pintushi\Bundle\GridBundle\Extension\Appearance\Configuration
+
+    pintushi_grid.datagrid.board.configuration:
+        class: Pintushi\Bundle\GridBundle\Extension\Board\Configuration
+
+    pintushi_grid.datagrid.board.processor.default:
+        class: '%pintushi_grid.datagrid.board.processor.default.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pintushi_entity.orm.entity_class_resolver'
+            - '@pintushi_grid.choice.helper'
+        tags:
+          - { name: pintushi_grid.board_processor }
+
+    pintushi_grid.choice.helper:
+        class: '%pintushi_grid.choice.helper.class%'
+        arguments:
+            - '@pintushi_entity.doctrine_helper'
+            - '@pintushi_security.acl_helper'
+
+    pintushi_grid.cache.datagrid_configuration_cache_warmer:
+        class: Pintushi\Bundle\GridBundle\Cache\DatagridConfigurationCacheWarmer
+        arguments:
+            - '@pintushi_grid.configuration.provider'
+        tags:
+            - { name: kernel.cache_warmer }
+
+    pintushi_grid.helper.route:
+        class: 'Pintushi\Bundle\GridBundle\Tools\DatagridRouteHelper'
+        arguments:
+            - '@router.default'
+
+
+    pintushi_grid.multi_grid_provider:
+        class: Pintushi\Bundle\GridBundle\Provider\MultiGridProvider
+        arguments:
+            - '@security.authorization_checker'
+            - '@pintushi_entity_config.config_manager'
+            - '@pintushi_grid.datagrid.manager'
+
+    pintushi_grid.multi_grid_provider.link:
+        class: Oro\Component\DependencyInjection\ServiceLink
+        tags:
+            - { name: service_link, service: pintushi_grid.multi_grid_provider }
+
+    pintushi_grid.helper.date:
+        class: Pintushi\Bundle\GridBundle\Tools\DateHelper
+        arguments:
+            - '@pintushi_locale.settings'
+
+    pintushi_grid.converter.url_converter:
+        class: Pintushi\Bundle\GridBundle\Converter\UrlConverter
+        public: false
+        arguments:
+            - '@router'
+
+    pintushi.orm.query_builder.count_query_optimizer:
+        class: 'Pintushi\Bundle\GridBundle\ORM\QueryBuilder\CountQueryBuilderOptimizer'
+        calls:
+            - [setEventDispatcher, ['@event_dispatcher']]
+

@@ -1,0 +1,59 @@
+parameters:
+    pintushi_grid.extension.formatter.property.field_property.class:            Pintushi\Bundle\GridBundle\Extension\Formatter\Property\FieldProperty
+    pintushi_grid.extension.formatter.property.url_property.class:              Pintushi\Bundle\GridBundle\Extension\Formatter\Property\UrlProperty
+    pintushi_grid.extension.formatter.property.link_property.class:             Pintushi\Bundle\GridBundle\Extension\Formatter\Property\LinkProperty
+    pintushi_grid.extension.formatter.property.twig_property.class:             Pintushi\Bundle\GridBundle\Extension\Formatter\Property\TwigTemplateProperty
+    pintushi_grid.extension.formatter.property.translatable_property.class:     Pintushi\Bundle\GridBundle\Extension\Formatter\Property\TranslatableProperty
+    pintushi_grid.extension.formatter.property.callback_property.class:         Pintushi\Bundle\GridBundle\Extension\Formatter\Property\CallbackProperty
+    pintushi_grid.extension.formatter.property.localized_number_property.class: Pintushi\Bundle\GridBundle\Extension\Formatter\Property\LocalizedNumberProperty
+
+services:
+    pintushi_grid.extension.formatter.field_property:
+        class: '%pintushi_grid.extension.formatter.property.field_property.class%'
+        arguments:
+            - '@translator'
+        tags:
+            - { name:  pintushi_grid.extension.formatter.property, type: field }
+
+    pintushi_grid.extension.formatter.property.url_property:
+        class: '%pintushi_grid.extension.formatter.property.url_property.class%'
+        arguments:
+            - '@router'
+        tags:
+            - { name:  pintushi_grid.extension.formatter.property, type: url }
+
+    pintushi_grid.extension.formatter.property.link_property:
+        class: '%pintushi_grid.extension.formatter.property.link_property.class%'
+        arguments:
+            - '@router'
+            - '@twig'
+        tags:
+            - { name:  pintushi_grid.extension.formatter.property, type: link }
+
+    pintushi_grid.extension.formatter.property.twig_property:
+        class: '%pintushi_grid.extension.formatter.property.twig_property.class%'
+        arguments:
+            - '@twig'
+        tags:
+            - { name:  pintushi_grid.extension.formatter.property, type: twig }
+
+    pintushi_grid.extension.formatter.property.translatable_property:
+        class: '%pintushi_grid.extension.formatter.property.translatable_property.class%'
+        arguments:
+            - '@translator'
+        tags:
+            - { name:  pintushi_grid.extension.formatter.property, type: translatable }
+
+    pintushi_grid.extension.formatter.property.callback_property:
+        class : '%pintushi_grid.extension.formatter.property.callback_property.class%'
+        arguments: []
+        tags:
+            - { name:  pintushi_grid.extension.formatter.property, type: callback }
+
+    pintushi_grid.extension.formatter.property.localized_number_property:
+        class : '%pintushi_grid.extension.formatter.property.localized_number_property.class%'
+        arguments:
+            - '@translator'
+            - '@pintushi_locale.formatter.number'
+        tags:
+            - { name:  pintushi_grid.extension.formatter.property, type: localized_number }

@@ -1,0 +1,22 @@
+{
+    "name": "pintushi/grid-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Grid Bundle",
+    "keywords": ["BAP", "Grid"],
+    "license": "MIT",
+    "require": {
+        "php": "7.1.*",
+        "symfony/symfony": "^3.4",
+        "pintushi/config": "^1.0@dev",
+        "pintushi/security-bundle": "^1.0@dev"
+    },
+    "autoload": {
+        "psr-0": { "Pintushi\\Bundle\\GridBundle": "" }
+    },
+    "target-dir": "Pintushi/Bundle/GridBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

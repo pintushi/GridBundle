@@ -1,0 +1,32 @@
+parameters:
+    pintushi_grid.datasource.orm.class:                  Pintushi\Bundle\GridBundle\Datasource\Orm\OrmDatasource
+    pintushi_grid.datasource.orm.parameter_binder.class: Pintushi\Bundle\GridBundle\Datasource\Orm\ParameterBinder
+
+services:
+    pintushi_grid.datasource.orm:
+        class: '%pintushi_grid.datasource.orm.class%'
+        arguments:
+            - '@pintushi_grid.datasource.orm.configs.yaml_processor'
+            - '@pintushi_grid.event.dispatcher'
+            - '@pintushi_grid.datasource.orm.parameter_binder'
+            - '@pintushi_entity.query_hint_resolver'
+            - '@pintushi_grid.orm.query_executor'
+        tags:
+            - { name: pintushi_grid.datasource, type: orm }
+
+    pintushi_grid.datasource.array:
+        class: 'Pintushi\Bundle\GridBundle\Datasource\ArrayDatasource\ArrayDatasource'
+        tags:
+            - { name: pintushi_grid.datasource, type: array }
+
+    pintushi_grid.orm.query_executor:
+        class: Pintushi\Bundle\GridBundle\Datasource\Orm\QueryExecutor
+        public: false
+
+    pintushi_grid.datasource.orm.parameter_binder:
+        class: '%pintushi_grid.datasource.orm.parameter_binder.class%'
+
+    pintushi_grid.datasource.orm.configs.yaml_processor:
+        class: Pintushi\Bundle\GridBundle\Datasource\Orm\Configs\YamlProcessor
+        arguments:
+            - '@doctrine'
