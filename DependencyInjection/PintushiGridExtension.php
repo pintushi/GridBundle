@@ -31,7 +31,7 @@ class PintushiGridExtension extends Extension
         }
 
         if ($container->getParameter('kernel.environment') === 'test') {
-            $loader->load('services_test.yml');
+            // $loader->load('services_test.yml');
         }
 
         $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));

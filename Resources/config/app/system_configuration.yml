@@ -1,12 +1,12 @@
 system_configuration:
     groups:
         look_and_feel:
-            title:       oro.grid.system_configuration.groups.look_and_feel.title
+            title:       pintushi.grid.system_configuration.groups.look_and_feel.title
             icon:        'fa-eye'
             page_reload: true
 
         grid_settings:
-            title:       oro.grid.system_configuration.groups.grid_settings.title
+            title:       pintushi.grid.system_configuration.groups.grid_settings.title
 
     fields:
         pintushi_grid.default_per_page:
@@ -15,7 +15,7 @@ system_configuration:
             search_type: choice
             priority: 200
             options:
-                label: oro.grid.system_configuration.fields.default_per_page.label
+                label: pintushi.grid.system_configuration.fields.default_per_page.label
                 choices:
                     10:     10
                     25:     25
@@ -29,8 +29,8 @@ system_configuration:
             type: Pintushi\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             priority: 150
             options:
-                label: oro.grid.system_configuration.fields.full_screen_layout_enabled.label
-                tooltip: oro.grid.system_configuration.fields.full_screen_layout_enabled.tooltip
+                label: pintushi.grid.system_configuration.fields.full_screen_layout_enabled.label
+                tooltip: pintushi.grid.system_configuration.fields.full_screen_layout_enabled.tooltip
                 required: false
     tree:
         system_configuration:

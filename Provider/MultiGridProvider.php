@@ -3,8 +3,7 @@
 namespace Pintushi\Bundle\GridBundle\Provider;
 
 use Pintushi\Bundle\GridBundle\Datagrid\ManagerInterface;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Pintushi\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class MultiGridProvider
@@ -40,10 +39,6 @@ class MultiGridProvider
      */
     public function getContextGridByEntity($entityClass)
     {
-        if (ExtendHelper::isCustomEntity($entityClass)) {
-            return 'custom-entity-grid';
-        }
-
         $config = $this->configManager->getProvider('grid')->getConfig($entityClass);
         if ($config->has('context')) {
             return $config->get('context');

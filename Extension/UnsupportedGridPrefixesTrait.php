@@ -3,7 +3,7 @@
 namespace Pintushi\Bundle\GridBundle\Extension;
 
 use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Component\PhpUtils\ArrayUtil;
+use Pintushi\Component\PhpUtils\ArrayUtil;
 
 trait UnsupportedGridPrefixesTrait
 {

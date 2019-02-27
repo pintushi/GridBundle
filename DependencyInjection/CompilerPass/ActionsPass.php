@@ -6,6 +6,7 @@ use Oro\Component\DependencyInjection\Compiler\TaggedServicesCompilerPassTrait;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+use Pintushi\Bundle\GridBundle\Extension\Action\Actions\ActionInterface;
 
 class ActionsPass implements CompilerPassInterface
 {
@@ -63,13 +64,15 @@ class ActionsPass implements CompilerPassInterface
      */
     protected function registerActions(ContainerBuilder $container, $actionFactoryServiceId, $actionTagName)
     {
+        $container
+            ->registerForAutoconfiguration(ActionInterface::class)
+            ->setPublic(true)
+        ;
+
         $actionFactoryDef = $container->getDefinition($actionFactoryServiceId);
         $actions = $container->findTaggedServiceIds($actionTagName);
         foreach ($actions as $serviceId => $tags) {
             $actionDef = $container->getDefinition($serviceId);
-            if (!$actionDef->isPublic()) {
-                throw new RuntimeException(sprintf('The service "%s" should be public.', $serviceId));
-            }
             if ($actionDef->isShared()) {
                 throw new RuntimeException(sprintf('The service "%s" should not be shared.', $serviceId));
             }

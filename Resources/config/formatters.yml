@@ -22,20 +22,20 @@ services:
         tags:
             - { name:  pintushi_grid.extension.formatter.property, type: url }
 
-    pintushi_grid.extension.formatter.property.link_property:
-        class: '%pintushi_grid.extension.formatter.property.link_property.class%'
-        arguments:
-            - '@router'
-            - '@twig'
-        tags:
-            - { name:  pintushi_grid.extension.formatter.property, type: link }
+    # pintushi_grid.extension.formatter.property.link_property:
+    #     class: '%pintushi_grid.extension.formatter.property.link_property.class%'
+    #     arguments:
+    #         - '@router'
+    #         - '@twig'
+    #     tags:
+    #         - { name:  pintushi_grid.extension.formatter.property, type: link }
 
-    pintushi_grid.extension.formatter.property.twig_property:
-        class: '%pintushi_grid.extension.formatter.property.twig_property.class%'
-        arguments:
-            - '@twig'
-        tags:
-            - { name:  pintushi_grid.extension.formatter.property, type: twig }
+    # pintushi_grid.extension.formatter.property.twig_property:
+    #     class: '%pintushi_grid.extension.formatter.property.twig_property.class%'
+    #     arguments:
+    #         - '@twig'
+    #     tags:
+    #         - { name:  pintushi_grid.extension.formatter.property, type: twig }
 
     pintushi_grid.extension.formatter.property.translatable_property:
         class: '%pintushi_grid.extension.formatter.property.translatable_property.class%'

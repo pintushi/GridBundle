@@ -2,7 +2,6 @@
 
 namespace Pintushi\Bundle\GridBundle\Controller;
 
-use Pintushi\Bundle\GridBundle\Async\Topics;
 use Pintushi\Bundle\GridBundle\Datagrid\Manager;
 use Pintushi\Bundle\GridBundle\Datagrid\RequestParameterBagFactory;
 use Pintushi\Bundle\GridBundle\Exception\LogicException;
@@ -10,7 +9,6 @@ use Pintushi\Bundle\GridBundle\Exception\UserInputErrorExceptionInterface;
 use Pintushi\Bundle\GridBundle\Extension\Export\Configuration;
 use Pintushi\Bundle\GridBundle\Extension\Export\ExportExtension;
 use Pintushi\Bundle\GridBundle\Extension\MassAction\MassActionDispatcher;
-use Oro\Bundle\ImportExportBundle\Formatter\FormatterProvider;
 use Pintushi\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -120,48 +118,6 @@ class GridController extends Controller
         }
 
         return new JsonResponse($filterData);
-    }
-
-    /**
-     * @Route(
-     *      "/{gridName}/export/",
-     *      name="pintushi_grid_export_action",
-     *      requirements={"gridName"="[\w\:-]+"}
-     * )
-     *
-     * @AclAncestor("pintushi_grid_gridview_export")
-     *
-     * @param Request $request
-     * @param string $gridName
-     *
-     * @return JsonResponse
-     */
-    public function exportAction(Request $request, $gridName)
-    {
-        $format = $request->query->get('format');
-        $formatType = $request->query->get('format_type', 'excel');
-        $gridParameters = $this->getRequestParametersFactory()->fetchParameters($gridName);
-        $parameters = [
-            'gridName' => $gridName,
-            'gridParameters' => $gridParameters,
-            FormatterProvider::FORMAT_TYPE => $formatType,
-        ];
-
-        $gridConfiguration = $this->getGridManager()->getConfigurationForGrid($gridName);
-        $exportOptions = $gridConfiguration->offsetGetByPath(ExportExtension::EXPORT_OPTION_PATH);
-        if (isset($exportOptions[$format][Configuration::OPTION_PAGE_SIZE])) {
-            $parameters['pageSize'] = (int)$exportOptions[$format][Configuration::OPTION_PAGE_SIZE];
-        }
-
-        $this->getMessageProducer()->send(Topics::PRE_EXPORT, [
-            'format' => $format,
-            'parameters' => $parameters,
-            'notificationTemplate' => 'datagrid_export_result',
-        ]);
-
-        return new JsonResponse([
-            'successful' => true,
-        ]);
     }
 
     /**

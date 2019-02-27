@@ -28,24 +28,19 @@ parameters:
     pintushi_grid.grid_view.form.handler.api.class:                Pintushi\Bundle\GridBundle\Form\Handler\GridViewApiHandler
     pintushi_grid.choice.helper.class:                             Pintushi\Bundle\GridBundle\Tools\ChoiceFieldHelper
 
-    pintushi_grid.datagrid.inline_edit_column_options_guesser.class:          Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptionsGuesser
-    pintushi_grid.datagrid.inline_edit_column_options.text_guesser.class:     Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\TextGuesser
-    pintushi_grid.datagrid.inline_edit_column_options.choices_guesser.class:  Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\ChoicesGuesser
-    pintushi_grid.datagrid.inline_edit_column_options.relation_guesser.class: Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\RelationGuesser
-    pintushi_grid.datagrid.inline_edit_column_options.multi_select_guesser.class: Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\MultiSelectGuesser
-    pintushi_grid.datagrid.inline_edit_column_options.multi_relation_guesser.class: Pintushi\Bundle\GridBundle\Extension\InlineEditing\InlineEditColumnOptions\MultiRelationGuesser
-
     pintushi_grid.datagrid.board.processor.default.class: Pintushi\Bundle\GridBundle\Extension\Board\Processor\DefaultProcessor
     pintushi_grid.datagrid.board.restriction_manager.class: Pintushi\Bundle\GridBundle\Extension\Board\RestrictionManager
 
 services:
-    pintushi_grid.datagrid.manager:
+    Pintushi\Bundle\GridBundle\Datagrid\Manager:
         class: '%pintushi_grid.datagrid.manager.class%'
         arguments:
             - '@pintushi_grid.configuration.provider.chain'
             - '@pintushi_grid.datagrid.builder'
             - '@pintushi_grid.datagrid.request_parameters_factory'
             - '@pintushi_grid.datagrid.name_strategy'
+
+    pintushi_grid.datagrid.manager: '@Pintushi\Bundle\GridBundle\Datagrid\Manager'
 
     pintushi_grid.datagrid.name_strategy:
         class: '%pintushi_grid.datagrid.name_strategy.class%'
@@ -212,45 +207,6 @@ services:
             - '@doctrine'
             - '@pintushi_grid.grid_view.manager'
             - '@security.token_storage'
-
-    pintushi_grid.datagrid.inline_edit_column_options_guesser:
-        class: '%pintushi_grid.datagrid.inline_edit_column_options_guesser.class%'
-        arguments:
-            - '@validator'
-
-    pintushi_grid.datagrid.inline_edit_column_options.text_guesser:
-        class: '%pintushi_grid.datagrid.inline_edit_column_options.text_guesser.class%'
-        arguments:
-            - '@pintushi_entity.doctrine_helper'
-        tags:
-            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 100 }
-
-    pintushi_grid.datagrid.inline_edit_column_options.choices_guesser:
-        class: '%pintushi_grid.datagrid.inline_edit_column_options.choices_guesser.class%'
-        arguments:
-            - '@pintushi_entity.doctrine_helper'
-            - '@pintushi_grid.choice.helper'
-        tags:
-            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 90 }
-
-    pintushi_grid.datagrid.inline_edit_column_options.multi_select_guesser:
-        class: '%pintushi_grid.datagrid.inline_edit_column_options.multi_select_guesser.class%'
-        arguments:
-            - '@pintushi_entity.doctrine_helper'
-            - '@pintushi_grid.choice.helper'
-        tags:
-            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 92 }
-
-    pintushi_grid.datagrid.inline_edit_column_options.relation_guesser:
-        class: '%pintushi_grid.datagrid.inline_edit_column_options.relation_guesser.class%'
-        tags:
-            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 95 }
-
-    pintushi_grid.datagrid.inline_edit_column_options.multi_relation_guesser:
-        class: '%pintushi_grid.datagrid.inline_edit_column_options.multi_relation_guesser.class%'
-        tags:
-            - { name: pintushi_grid.inline_edit_column_options_guesser, priority: 97 }
-
 
     pintushi_grid.grid_configuration.helper:
         class: Pintushi\Bundle\GridBundle\Tools\GridConfigurationHelper

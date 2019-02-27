@@ -9,7 +9,7 @@ use Pintushi\Bundle\GridBundle\Datasource\Orm\OrmDatasource;
 use Pintushi\Bundle\GridBundle\Datasource\ResultRecord;
 use Pintushi\Bundle\GridBundle\Extension\AbstractExtension;
 use Pintushi\Bundle\GridBundle\Extension\Formatter\Property\PropertyInterface;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Pintushi\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Pintushi\Bundle\SecurityBundle\Acl\Domain\DomainObjectReference;
 use Pintushi\Bundle\SecurityBundle\Owner\OwnershipQueryHelper;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;

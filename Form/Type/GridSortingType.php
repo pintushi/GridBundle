@@ -2,7 +2,6 @@
 
 namespace Pintushi\Bundle\GridBundle\Form\Type;
 
-use Oro\Bundle\QueryDesignerBundle\Form\Type\SortingChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

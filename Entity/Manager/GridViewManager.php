@@ -18,7 +18,7 @@ use Pintushi\Bundle\GridBundle\Extension\GridViews\ViewInterface;
 use Pintushi\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Pintushi\Bundle\UserBundle\Entity\AbstractUser;
 use Pintushi\Bundle\UserBundle\Entity\UserInterface;
-use Oro\Component\PhpUtils\ArrayUtil;
+use Pintushi\Component\PhpUtils\ArrayUtil;
 
 class GridViewManager
 {

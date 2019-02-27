@@ -107,6 +107,7 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
         );
 
         $rows = $this->queryExecutor->execute($this->datagrid, $query);
+
         $records = [];
         foreach ($rows as $row) {
             $records[] = new ResultRecord($row);

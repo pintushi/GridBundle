@@ -7,15 +7,15 @@ use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
 use Pintushi\Bundle\GridBundle\Exception\RuntimeException;
 use Oro\Component\Config\Loader\CumulativeConfigLoader;
 use Oro\Component\Config\Loader\YamlCumulativeFileLoader;
-use Oro\Component\PhpUtils\ArrayUtil;
+use Pintushi\Component\PhpUtils\ArrayUtil;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Load data grids configuration from Resources/config/app/datagrids.yml files
+ * Load data grids configuration from Resources/config/app/grids.yml files
  */
 class ConfigurationProvider implements ConfigurationProviderInterface
 {
-    private const ROOT_PARAMETER   = 'datagrids';
+    private const ROOT_PARAMETER   = 'grids';
     private const MIXINS_PARAMETER = 'mixins';
 
     /** @var array */
@@ -154,7 +154,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
     {
         return new CumulativeConfigLoader(
             'pintushi_grid',
-            new YamlCumulativeFileLoader('Resources/config/app/datagrids.yml')
+            new YamlCumulativeFileLoader('Resources/config/app/grids.yml')
         );
     }
 }

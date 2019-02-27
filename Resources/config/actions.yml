@@ -6,6 +6,11 @@ parameters:
     pintushi_grid.extension.action.type.frontend.class:    Pintushi\Bundle\GridBundle\Extension\Action\Actions\FrontendAction
 
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
     pintushi_grid.extension.action.factory:
         class: Pintushi\Bundle\GridBundle\Extension\Action\ActionFactory
         public: false

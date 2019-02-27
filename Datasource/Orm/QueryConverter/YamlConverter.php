@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Pintushi\Bundle\GridBundle\ORM\QueryBuilder\QueryBuilderTools;
-use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
+use Pintushi\Bundle\GridBundle\Datasource\Orm\GroupByHelper;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
