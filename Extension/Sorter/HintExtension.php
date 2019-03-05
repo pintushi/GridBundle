@@ -12,7 +12,7 @@ class HintExtension extends AbstractExtension
     /**
      * @var QueryHintResolver
      */
-    protected $queryHintResolver;
+    protected $configHintResolver;
 
     /**
      * @var string
@@ -25,13 +25,13 @@ class HintExtension extends AbstractExtension
     protected $priority;
 
     /**
-     * @param QueryHintResolver $queryHintResolver
+     * @param QueryHintResolver $configHintResolver
      * @param string $hintName
      * @param int $priority
      */
-    public function __construct(QueryHintResolver $queryHintResolver, $hintName, $priority)
+    public function __construct(QueryHintResolver $configHintResolver, $hintName, $priority)
     {
-        $this->queryHintResolver = $queryHintResolver;
+        $this->queryHintResolver = $configHintResolver;
         $this->hintName = $hintName;
         $this->priority = $priority;
     }
@@ -57,21 +57,19 @@ class HintExtension extends AbstractExtension
      */
     public function processConfigs(DatagridConfiguration $config)
     {
-        $query = $config->getOrmQuery();
-
         $addHint = true;
         $resolvedHintName = $this->queryHintResolver->resolveHintName($this->hintName);
-        $hints = $query->getHints();
+        $hints = $config->getHints();
         foreach ($hints as $hintKey => $hint) {
             if (is_array($hint)) {
-                $hintName = $this->getHintAttribute($hint, OrmQuery::NAME_KEY);
+                $hintName = $this->getHintAttribute($hint, DatagridConfiguration::NAME_KEY);
                 if ($this->hintName === $hintName || $resolvedHintName === $hintName) {
                     $addHint = false;
-                    $hintValue = $this->getHintAttribute($hint, OrmQuery::VALUE_KEY);
+                    $hintValue = $this->getHintAttribute($hint, DatagridConfiguration::VALUE_KEY);
                     if (false === $hintValue) {
                         // remove the hint if it was disabled
                         unset($hints[$hintKey]);
-                        $query->setHints($hints);
+                        $config->setHints($hints);
                     }
                     break;
                 }
@@ -81,7 +79,7 @@ class HintExtension extends AbstractExtension
             }
         }
         if ($addHint) {
-            $query->addHint($this->hintName);
+            $config->addHint($this->hintName);
         }
     }
 

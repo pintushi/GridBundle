@@ -48,11 +48,11 @@ datagrids:
             toolbar_sorting: true #optional, shows additional sorting control in toolbar
             columns:
                 label:  # column name for view layer
-                    data_name: o.label   # property in result set (column name or alias), if main entity has alias
+                    property_path: o.label   # property in result set (column name or alias), if main entity has alias
                                          # like in this example it will be added automatically
                     type: string #optional, affects labels in toolbar sorting
                 someColumn:
-                    data_name: someAlias
+                    property_path: someAlias
                     apply_callback: callable # if you want to apply some operations instead of just adding ORDER BY
             default:
                 label: %pintushi_grid.extension.orm_sorter.class%::DIRECTION_DESC # sorters enabled by default, key is a column name

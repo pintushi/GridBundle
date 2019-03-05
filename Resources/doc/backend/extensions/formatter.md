@@ -11,7 +11,7 @@ Formatters
 column_name:
     type: field # default value `field`, so this key could be skipped here
     frontend_type: date|datetime|decimal|integer|percent|currency|select|text|html|boolean # optional default string
-    data_name: someAlias.someField # optional, key in result that should represent this field
+    property_path: someAlias.someField # optional, key in result that should represent this field
     divisor: some number # optional if you need to divide a numeric value by a number before rendering it
 ```
 Represents default data field.
@@ -52,7 +52,7 @@ Represents twig template formatted field.
 ```yaml
 column_name:
     type: translatable
-    data_name: string #optional if need to took value from another column
+    property_path: string #optional if need to took value from another column
     domain: string #optional
     locale: string #optional
 ```

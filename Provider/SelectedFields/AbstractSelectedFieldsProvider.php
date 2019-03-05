@@ -34,7 +34,7 @@ abstract class AbstractSelectedFieldsProvider implements SelectedFieldsProviderI
         $state = $this->getState($datagridConfiguration, $datagridParameters);
 
         return array_map(function (string $name) use ($configuration) {
-            return $configuration[$name]['data_name'] ?? $name;
+            return $configuration[$name]['property_path'] ?? $name;
         }, array_keys($state));
     }
 

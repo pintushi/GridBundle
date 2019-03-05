@@ -68,7 +68,7 @@ datagrids:
             bind_parameters:
                 - groupId
         columns:
-            isAssigned: # column has name correspond to data_name
+            isAssigned: # column has name correspond to property_path
                 label: Assigned
                 frontend_type: boolean
                 editable: true # put cell in editable mod

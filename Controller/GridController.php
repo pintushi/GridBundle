@@ -7,10 +7,8 @@ use Pintushi\Bundle\GridBundle\Datagrid\RequestParameterBagFactory;
 use Pintushi\Bundle\GridBundle\Exception\LogicException;
 use Pintushi\Bundle\GridBundle\Exception\UserInputErrorExceptionInterface;
 use Pintushi\Bundle\GridBundle\Extension\Export\Configuration;
-use Pintushi\Bundle\GridBundle\Extension\Export\ExportExtension;
 use Pintushi\Bundle\GridBundle\Extension\MassAction\MassActionDispatcher;
 use Pintushi\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -121,44 +119,6 @@ class GridController extends Controller
     }
 
     /**
-     * @Route(
-     *      "/{gridName}/massAction/{actionName}",
-     *      name="pintushi_grid_mass_action",
-     *      requirements={"gridName"="[\w\:-]+", "actionName"="[\w-]+"}
-     * )
-     * @param Request $request
-     * @param string $gridName
-     * @param string $actionName
-     *
-     * @return Response
-     * @throws \LogicException
-     */
-    public function massActionAction(Request $request, $gridName, $actionName)
-    {
-        /* @var $tokenManager CsrfTokenManagerInterface */
-        $tokenManager = $this->get('security.csrf.token_manager');
-        if (!$tokenManager->isTokenValid(new CsrfToken($actionName, $request->get('token')))) {
-            return new JsonResponse('Invalid CSRF Token', JsonResponse::HTTP_FORBIDDEN);
-        }
-
-        /** @var MassActionDispatcher $massActionDispatcher */
-        $massActionDispatcher = $this->get('pintushi_grid.mass_action.dispatcher');
-
-        try {
-            $response = $massActionDispatcher->dispatchByRequest($gridName, $actionName, $request);
-        } catch (LogicException $e) {
-            return new JsonResponse(null, JsonResponse::HTTP_FORBIDDEN);
-        }
-
-        $data = [
-            'successful' => $response->isSuccessful(),
-            'message'    => $response->getMessage(),
-        ];
-
-        return new JsonResponse(array_merge($data, $response->getOptions()));
-    }
-
-    /**
      * @param Request $request
      * @return array
      */
@@ -183,14 +143,6 @@ class GridController extends Controller
         }
 
         return $renderParams;
-    }
-
-    /**
-     * @return MessageProducerInterface
-     */
-    protected function getMessageProducer()
-    {
-        return $this->get('oro_message_queue.client.message_producer');
     }
 
     /**

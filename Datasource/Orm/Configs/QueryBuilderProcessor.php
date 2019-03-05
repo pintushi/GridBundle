@@ -4,10 +4,9 @@ namespace Pintushi\Bundle\GridBundle\Datasource\Orm\Configs;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Pintushi\Bundle\GridBundle\Datasource\Orm\QueryConverter\YamlConverter;
 use Pintushi\Bundle\GridBundle\Exception\DatasourceException;
 
-class YamlProcessor implements ConfigProcessorInterface
+class QueryBuilderProcessor
 {
     /** @var ManagerRegistry */
     protected $registry;
@@ -25,11 +24,7 @@ class YamlProcessor implements ConfigProcessorInterface
      */
     public function processQuery(array $config)
     {
-        if (array_key_exists('query', $config)) {
-            $queryConfig = $config['query'];
-            $converter = new YamlConverter();
-            return $converter->parse(['query' => $queryConfig], $this->registry);
-        } elseif (array_key_exists('query_builder', $config)) {
+        if (array_key_exists('query_builder', $config)) {
             $qb = $config['query_builder']; // "@service.name->getDatagridQb"
             if ($qb instanceof QueryBuilder) {
                 return $qb;
@@ -66,35 +61,5 @@ class YamlProcessor implements ConfigProcessorInterface
         } else {
             throw new DatasourceException(get_class($this).' expects to be configured with query or repository method');
         }
-    }
-
-    /**
-     * Creates QueryBuilder for count query if configs for count query exist in configs array.
-     * Merges
-     * {@inheritdoc}
-     */
-    public function processCountQuery(array $config)
-    {
-        if (array_key_exists('count_query', $config) && is_array($config['count_query'])) {
-            $queryConfig = $config['count_query'];
-            if (array_key_exists('query', $config) && is_array($config['query'])) {
-                $queryConfig = $this->mergeQueryConfigs($config);
-            }
-            $converter = new YamlConverter();
-
-            return $converter->parse(['query' => $queryConfig], $this->registry);
-        }
-
-        return null;
-    }
-
-    /**
-     * @param array $config
-     *
-     * @return array
-     */
-    protected function mergeQueryConfigs(array $config)
-    {
-        return array_merge($config['query'], $config['count_query']);
     }
 }

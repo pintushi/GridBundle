@@ -43,19 +43,19 @@ Block `account_users` contains two other blocks: `account_users_header_row` and 
     columns:
         firstName:
             type:      string
-            data_name: accountUser.firstName
+            property_path: accountUser.firstName
         lastName:
             type:      string
-            data_name: accountUser.lastName
+            property_path: accountUser.lastName
         email:
             type:      string
-            data_name: accountUser.email
+            property_path: accountUser.email
         enabled:
             type:      boolean
-            data_name: accountUser.enabled
+            property_path: accountUser.enabled
         confirmed:
             type:      boolean
-            data_name: accountUser.confirmed
+            property_path: accountUser.confirmed
 ```
 
 Block `account_users_row` consists of `<block_id>_<column1...N>` which corresponds to `<td>...</td>`. Leaf blocks `<block_id>_cell_<column1...N>_value` holds cell value for row value. 

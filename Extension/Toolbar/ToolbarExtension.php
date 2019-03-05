@@ -110,14 +110,6 @@ class ToolbarExtension extends AbstractExtension
 
         $options = $config->offsetGetByPath(ToolbarExtension::OPTIONS_PATH, []);
 
-        // get user specified require js modules from options
-        if (isset($options[MetadataObject::REQUIRED_MODULES_KEY])) {
-            $data->offsetAddToArray(
-                MetadataObject::REQUIRED_MODULES_KEY,
-                $options[MetadataObject::REQUIRED_MODULES_KEY]
-            );
-            unset($options[MetadataObject::REQUIRED_MODULES_KEY]);
-        }
 
         // in case of one page pagination page selector should be hidden
         if ($config->offsetGetByPath(self::PAGER_ONE_PAGE_OPTION_PATH, false)) {

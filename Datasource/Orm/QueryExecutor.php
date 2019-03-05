@@ -16,7 +16,7 @@ class QueryExecutor implements QueryExecutorInterface
     public function execute(DatagridInterface $datagrid, Query $query, $executeFunc = null)
     {
         if (null === $executeFunc) {
-            return $query->execute();
+            return $query->getResult();
         }
 
         if (!is_callable($executeFunc)) {

@@ -9,7 +9,6 @@ class MetadataObject extends ConfigObject
 {
     const GRID_NAME_KEY        = 'gridName';
     const OPTIONS_KEY          = 'options';
-    const REQUIRED_MODULES_KEY = 'requireJSModules';
     const LAZY_KEY             = 'lazy';
 
     /**
@@ -20,7 +19,6 @@ class MetadataObject extends ConfigObject
     protected static function getDefaultMetadata()
     {
         return [
-            self::REQUIRED_MODULES_KEY => [],
             self::OPTIONS_KEY          => [],
             self::LAZY_KEY             => true,
         ];

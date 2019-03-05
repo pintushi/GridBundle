@@ -65,7 +65,7 @@ the `pintushi_grid.provider.selected_fields.columns` service. It returns fields 
 present in the select statement of the datasource query.
 
 It uses `Pintushi\Bundle\GridBundle\Provider\State\ColumnsStateProvider` to fetch the current state of columns, then collects 
-`data_name` configuration options from columns which are currently `renderable` (visible).
+`property_path` configuration options from columns which are currently `renderable` (visible).
 
 Keep in mind that the resulting array of fields can differ depending on the moment when provider is called, because it
 fetches data from the datagrid configuration and state which can be changed by extensions and listeners.
@@ -80,7 +80,7 @@ a `pintushi_grid.provider.selected_fields.sorters` service. It returns an array 
 which must be present in the select statement of the datasource query.
 
 It uses `Pintushi\Bundle\GridBundle\Provider\State\SortersStateProvider` to fetch the current state of sorters, then collects 
-`data_name` configuration options from sorters which are currently applied.
+`property_path` configuration options from sorters which are currently applied.
 
 Keep in mind that the resulting array of fields can differ depending on the moment when provider is called, because it
 fetches data from the datagrid configuration and state which can be changed by extensions and listeners.

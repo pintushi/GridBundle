@@ -5,7 +5,7 @@ namespace Pintushi\Bundle\GridBundle\Datasource\Orm;
 use Doctrine\ORM\QueryBuilder;
 use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
-use Pintushi\Bundle\GridBundle\Datasource\Orm\Configs\ConfigProcessorInterface;
+use Pintushi\Bundle\GridBundle\Datasource\Orm\Configs\QueryBuilderProcessor;
 use Pintushi\Bundle\GridBundle\Datasource\ParameterBinderAwareInterface;
 use Pintushi\Bundle\GridBundle\Datasource\ParameterBinderInterface;
 use Pintushi\Bundle\GridBundle\Datasource\ResultRecord;
@@ -36,8 +36,8 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
     /** @var array */
     protected $countQueryHints = [];
 
-    /** @var ConfigProcessorInterface */
-    protected $configProcessor;
+    /** @var QueryBuilderProcessor */
+    protected $queryBuilderProcessor;
 
     /** @var DatagridInterface */
     protected $datagrid;
@@ -55,20 +55,20 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
     private $queryExecutor;
 
     /**
-     * @param ConfigProcessorInterface $processor
+     * @param QueryBuilderProcessor $processor
      * @param EventDispatcherInterface $eventDispatcher
      * @param ParameterBinderInterface $parameterBinder
      * @param QueryHintResolver        $queryHintResolver
      * @param QueryExecutorInterface   $queryExecutor
      */
     public function __construct(
-        ConfigProcessorInterface $processor,
+        QueryBuilderProcessor $processor,
         EventDispatcherInterface $eventDispatcher,
         ParameterBinderInterface $parameterBinder,
         QueryHintResolver $queryHintResolver,
         QueryExecutorInterface $queryExecutor
     ) {
-        $this->configProcessor = $processor;
+        $this->queryBuilderProcessor = $processor;
         $this->eventDispatcher = $eventDispatcher;
         $this->parameterBinder = $parameterBinder;
         $this->queryHintResolver = $queryHintResolver;
@@ -203,8 +203,7 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
      */
     protected function processConfigs(array $config)
     {
-        $this->qb = $this->configProcessor->processQuery($config);
-        $this->countQb = $this->configProcessor->processCountQuery($config);
+        $this->qb = $this->queryBuilderProcessor->processQuery($config);
 
         $this->queryHints = $config['hints'] ?? [];
         $this->countQueryHints = $config['count_hints'] ?? $this->queryHints;

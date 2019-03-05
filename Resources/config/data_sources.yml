@@ -6,7 +6,7 @@ services:
     pintushi_grid.datasource.orm:
         class: '%pintushi_grid.datasource.orm.class%'
         arguments:
-            - '@pintushi_grid.datasource.orm.configs.yaml_processor'
+            - '@pintushi_grid.datasource.orm.configs.query_builder_processor'
             - '@pintushi_grid.event.dispatcher'
             - '@pintushi_grid.datasource.orm.parameter_binder'
             - '@pintushi_entity.query_hint_resolver'
@@ -26,7 +26,7 @@ services:
     pintushi_grid.datasource.orm.parameter_binder:
         class: '%pintushi_grid.datasource.orm.parameter_binder.class%'
 
-    pintushi_grid.datasource.orm.configs.yaml_processor:
-        class: Pintushi\Bundle\GridBundle\Datasource\Orm\Configs\YamlProcessor
+    pintushi_grid.datasource.orm.configs.query_builder_processor:
+        class: Pintushi\Bundle\GridBundle\Datasource\Orm\Configs\QueryBuilderProcessor
         arguments:
             - '@doctrine'

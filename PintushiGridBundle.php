@@ -22,9 +22,7 @@ class PintushiGridBundle extends Bundle
         $container->addCompilerPass(new CompilerPass\FormattersPass());
         $container->addCompilerPass(new CompilerPass\ActionsPass());
         $container->addCompilerPass(new CompilerPass\GuessPass());
-        $container->addCompilerPass(new CompilerPass\InlineEditColumnOptionsGuesserPass());
         $container->addCompilerPass(new CompilerPass\SetDatagridEventListenersLazyPass());
-        $container->addCompilerPass(new CompilerPass\BoardProcessorsPass());
         $container->addCompilerPass(new CompilerPass\SelectedFieldsProvidersPass());
     }
 }

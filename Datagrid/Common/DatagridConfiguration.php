@@ -8,7 +8,6 @@ use Pintushi\Bundle\GridBundle\Datasource\Orm\OrmDatasource;
 use Pintushi\Bundle\GridBundle\Datasource\Orm\OrmQueryConfiguration;
 use Pintushi\Bundle\GridBundle\Exception\LogicException;
 use Pintushi\Bundle\GridBundle\Provider\SystemAwareResolver;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Component\Config\Common\ConfigObject;
 
 /**
@@ -21,6 +20,9 @@ class DatagridConfiguration extends ConfigObject
     const SORTER_PATH = '[sorters][columns][%s]';
     const FILTER_PATH = '[filters][columns][%s]';
     const DATASOURCE_PATH = '[source]';
+    const HINTS_PATH      = '[source][hints]';
+    const NAME_KEY           = 'name';
+    const VALUE_KEY          = 'value';
     const DATASOURCE_TYPE_PATH = '[source][type]';
     const BASE_DATAGRID_CLASS_PATH  = '[options][base_datagrid_class]';
 
@@ -49,6 +51,7 @@ class DatagridConfiguration extends ConfigObject
      * A datagrid parameters to datasource parameters binding.
      */
     const DATASOURCE_BIND_PARAMETERS_PATH = '[source][bind_parameters]';
+
 
     /** @var object|null */
     private $query;
@@ -229,10 +232,6 @@ class DatagridConfiguration extends ConfigObject
             $definition
         );
 
-        if (!is_null($select)) {
-            $this->getOrmQuery()->addSelect($select);
-        }
-
         if (!empty($sorter)) {
             $this->addSorter($name, $sorter);
         }
@@ -326,66 +325,6 @@ class DatagridConfiguration extends ConfigObject
     }
 
     /**
-     * @param string $columnName column name
-     * @param string $dataName   property path of the field, e.g. entity.enum_field
-     * @param string $enumCode   enum code
-     * @param bool   $isMultiple allow to filter by several values
-     *
-     * @return self
-     */
-    public function addEnumFilter($columnName, $dataName, $enumCode, $isMultiple = false)
-    {
-        $this->addFilter(
-            $columnName,
-            [
-                'type'      => 'entity',
-                'data_name' => $dataName,
-                'options'   => [
-                    'field_options' => [
-                        'class' => ExtendHelper::buildEnumValueClassName($enumCode),
-                        'choice_label' => 'name',
-                        'query_builder' => function (EntityRepository $entityRepository) {
-                            return $entityRepository->createQueryBuilder('c')
-                                ->orderBy('c.name', 'ASC');
-                        },
-                        'multiple' => $isMultiple,
-                    ],
-                ],
-            ]
-        );
-
-        return $this;
-    }
-
-    /**
-     * @param string      $name
-     * @param string      $label
-     * @param string      $templatePath
-     * @param null|string $select select part for the column
-     * @param array       $sorter sorter definition
-     * @param array       $filter filter definitio
-     *
-     * @return self
-     */
-    public function addTwigColumn($name, $label, $templatePath, $select = null, array $sorter = [], array $filter = [])
-    {
-        $this->addColumn(
-            $name,
-            [
-                'label'         => $label,
-                'type'          => 'twig',
-                'frontend_type' => 'html',
-                'template'      => $templatePath,
-            ],
-            $select,
-            $sorter,
-            $filter
-        );
-
-        return $this;
-    }
-
-    /**
      * @param string $name
      * @param array  $options
      *
@@ -414,5 +353,63 @@ class DatagridConfiguration extends ConfigObject
             }
         }
         return false;
+    }
+
+     /**
+     * Gets the query hints.
+     *
+     * @return array
+     */
+    public function getHints()
+    {
+        return $this->offsetGetByPath(self::HINTS_PATH, []);
+    }
+
+    /**
+     * Sets the query hints.
+     *
+     * @param array $hints
+     *
+     * @return self
+     */
+    public function setHints(array $hints)
+    {
+        $this->offsetSetByPath(self::HINTS_PATH, $hints);
+
+        return $this;
+    }
+
+    /**
+     * Removes the query hints.
+     *
+     * @return self
+     */
+    public function resetHints()
+    {
+        $this->offsetUnsetByPath(self::HINTS_PATH);
+
+        return $this;
+    }
+
+    /**
+     * Adds a hint to the query.
+     *
+     * @param string $name  The name of a hint.
+     * @param mixed  $value The value of a hint.
+     *
+     * @return self
+     */
+    public function addHint($name, $value = null)
+    {
+        if ($value) {
+            $this->offsetAddToArrayByPath(
+                self::HINTS_PATH,
+                [[self::NAME_KEY => $name, self::VALUE_KEY => $value]]
+            );
+        } else {
+            $this->offsetAddToArrayByPath(self::HINTS_PATH, [$name]);
+        }
+
+        return $this;
     }
 }

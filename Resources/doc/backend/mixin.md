@@ -22,12 +22,12 @@ datagrids:
             identifier:
                 frontend_type: integer
         sorters:
-            data_name: identifier
+            property_path: identifier
         filters:
             columns:
                 identifier:
                     type: number
-                    data_name: identifier
+                    property_path: identifier
 
     acme-demo-user-datagrid:
         # one or several mixins

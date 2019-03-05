@@ -136,7 +136,7 @@ class OrmTotalsExtension extends AbstractExtension
         $metaData
             ->offsetAddToArray('initialState', ['totals' => $totals])
             ->offsetAddToArray('state', ['totals' => $totals])
-            ->offsetAddToArray(MetadataObject::REQUIRED_MODULES_KEY, ['orodatagrid/js/totals-builder']);
+        ;
     }
 
     /**

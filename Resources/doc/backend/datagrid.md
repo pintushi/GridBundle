@@ -122,7 +122,7 @@ Configuration format is different depending on column type, but there are list o
 - `label` - column title (translated on backend, translation should be placed in "messages" domain)
 - `frontend_type` - frontend formatters that will process the column value (`string` - by default)
 - `editable` - is column editable on frontend (`false` - by default)
-- `data_name` - data identifier (column name suggested by default)
+- `property_path` - data identifier (column name suggested by default)
 - `renderable` - should column be rendered (`true` - by default)
 - `order` - number of column's position, allows to change order of the columns over [Datagrid Settings](../frontend/datagrid_settings.md) and save it in [Grid View](./extensions/grid_views.md) (by default is not defined and the columns are rendered in the order in which they are declared in the configuration)
 - `required` - if it is `true` the column can not be hidden over [Datagrid Settings](../frontend/datagrid_settings.md) (by default is `false`)
@@ -156,7 +156,7 @@ datagrids:
 After that you may want to make your columns sortable. Sorting configuration should be placed under `sorters` node.
  In basic sorter implementation, configuration takes `columns` and `default` keys.
 Basically it's array of column names where value is sorter configuration.
- There is one required value `data_name` that responsible of knowledge on which data grid should do sorting.
+ There is one required value `property_path` that responsible of knowledge on which data grid should do sorting.
 
 Lets make all columns sortable:
 ``` yaml
@@ -166,11 +166,11 @@ datagrids:
         sorters:
             columns:
                 firstName:
-                    data_name: o.firstName
+                    property_path: o.firstName
                 lastName:
-                    data_name: o.lastName
+                    property_path: o.lastName
                 age:
-                    data_name: o.age
+                    property_path: o.age
             default:
                 lastName: DESC              # Default sorting, allowed values ASC|DESC
 ``` 

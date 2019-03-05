@@ -80,6 +80,6 @@ datagrids:
         sorters:
             columns:
                 first_column:
-                    data_name: first_column
+                    property_path: first_column
 ```
 

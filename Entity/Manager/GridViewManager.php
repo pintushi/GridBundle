@@ -11,7 +11,6 @@ use Pintushi\Bundle\GridBundle\Entity\GridView;
 use Pintushi\Bundle\GridBundle\Entity\GridViewUser;
 use Pintushi\Bundle\GridBundle\Entity\Repository\GridViewRepository;
 use Pintushi\Bundle\GridBundle\Entity\Repository\GridViewUserRepository;
-use Pintushi\Bundle\GridBundle\Extension\Board\BoardExtension;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\GridViewsExtension;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\View;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\ViewInterface;
