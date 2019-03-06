@@ -1,0 +1,92 @@
+services:
+    pintushi_grid.extension.columns.string_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: string }
+
+    pintushi_grid.extension.columns.integer_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: integer }
+
+    pintushi_grid.extension.columns.date_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: date }
+
+    pintushi_grid.extension.columns.datetime_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: datetime }
+
+    pintushi_grid.extension.columns.time_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: time }
+
+    pintushi_grid.extension.columns.decimal_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: decimal }
+
+    pintushi_grid.extension.columns.percent_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: percent }
+
+    pintushi_grid.extension.columns.currency_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: currency }
+
+    pintushi_grid.extension.columns.select_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: select }
+
+    pintushi_grid.extension.columns.multi_select_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: multi_select }
+
+    pintushi_grid.extension.columns.boolean_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: boolean }
+
+    pintushi_grid.extension.columns.html_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: html }
+
+    pintushi_grid.extension.columns.array_column:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Columns\CompositeColumn'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension.columns.column, type: array }
+

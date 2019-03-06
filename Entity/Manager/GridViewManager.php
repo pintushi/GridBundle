@@ -4,8 +4,8 @@ namespace Pintushi\Bundle\GridBundle\Entity\Manager;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Manager;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Manager;
 use Pintushi\Bundle\GridBundle\Entity\AbstractGridViewUser;
 use Pintushi\Bundle\GridBundle\Entity\GridView;
 use Pintushi\Bundle\GridBundle\Entity\GridViewUser;
@@ -272,7 +272,7 @@ class GridViewManager
 
     /**
      * @param string $gridName
-     * @return DatagridConfiguration
+     * @return GridConfiguration
      */
     protected function getConfigurationForGrid($gridName)
     {

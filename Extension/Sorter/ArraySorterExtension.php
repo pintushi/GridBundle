@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension\Sorter;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Datasource\ArrayDatasource\ArrayDatasource;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
 use Pintushi\Bundle\GridBundle\Exception\InvalidArgumentException;
@@ -14,7 +14,7 @@ class ArraySorterExtension extends AbstractSorterExtension
     const DESC_SORTING = 'DESC';
 
     /** {@inheritdoc} */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(GridConfiguration $config)
     {
         return
             $config->getDatasourceType() === ArrayDatasource::TYPE

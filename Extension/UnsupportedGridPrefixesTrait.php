@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Component\PhpUtils\ArrayUtil;
 
 trait UnsupportedGridPrefixesTrait
@@ -21,11 +21,11 @@ trait UnsupportedGridPrefixesTrait
     /**
      * Checks if configuration is for supported grid prefix
      *
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      *
      * @return bool
      */
-    protected function isUnsupportedGridPrefix(DatagridConfiguration $config)
+    protected function isUnsupportedGridPrefix(GridConfiguration $config)
     {
         $gridName = $config->getName();
 

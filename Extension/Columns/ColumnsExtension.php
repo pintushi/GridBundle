@@ -2,138 +2,121 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension\Columns;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\MetadataObject;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
 use Pintushi\Bundle\GridBundle\Extension\AbstractExtension;
-use Pintushi\Bundle\GridBundle\Extension\Formatter\Configuration;
-use Pintushi\Bundle\GridBundle\Extension\GridViews\GridViewsExtension;
-use Pintushi\Bundle\GridBundle\Provider\State\ColumnsStateProvider;
-use Pintushi\Bundle\GridBundle\Provider\State\DatagridStateProviderInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Updates datagrid metadata object with:
- * - initial columns state - as per datagrid columns configuration;
- * - columns state - as per current state based on columns configuration, grid view settings and datagrid parameters;
- * - updates metadata columns with current `order` and `renderable` values.
+ * Process columns metadata for frontend.
  */
 class ColumnsExtension extends AbstractExtension
 {
-    public const MINIFIED_COLUMNS_PARAM = 'c';
-    public const COLUMNS_PARAM = '_columns';
+    /** @var ColumnInterface[] */
+    protected $columns = [];
 
-    /** @var DatagridStateProviderInterface|ColumnsStateProvider DatagridStateProviderInterface */
-    private $columnsStateProvider;
+    /** @var TranslatorInterface */
+    protected $translator;
 
-    /**
-     * @param DatagridStateProviderInterface $columnsStateProvider
-     */
-    public function __construct(DatagridStateProviderInterface $columnsStateProvider)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->columnsStateProvider = $columnsStateProvider;
+        $this->translator = $translator;
     }
 
     /**
-     * Should be applied after FormatterExtension.
-     *
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getPriority()
+    public function isApplicable(GridConfiguration $config)
     {
-        return -10;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isApplicable(DatagridConfiguration $datagridConfiguration)
-    {
-        if (!parent::isApplicable($datagridConfiguration)) {
+        if (!parent::isApplicable($config)) {
             return false;
         }
 
-        $columnsConfig = $datagridConfiguration->offsetGetOr(Configuration::COLUMNS_KEY, []);
+        $columns    = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
+        $applicable = $columns;
+        $this->processConfigs($config);
 
-        return count($columnsConfig) > 0;
+        return $applicable;
+    }
+
+
+    /**
+     * Validate configs nad fill default values
+     *
+     * @param GridConfiguration $config
+     */
+    public function processConfigs(GridConfiguration $config)
+    {
+        $columns    = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
+
+        // validate extension configuration and normalize by setting default values
+        $columnsNormalized    = $this->validateConfigurationByType($columns, Configuration::COLUMNS_KEY);
+
+        // replace config values by normalized, extra keys passed directly
+        $config->offsetSet(Configuration::COLUMNS_KEY, array_replace_recursive($columns, $columnsNormalized));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitMetadata(DatagridConfiguration $datagridConfiguration, MetadataObject $metadata)
+    public function visitMetadata(GridConfiguration $config, MetadataObject $data)
     {
-        $datagridParameters = $this->getParameters();
+        // get only columns here because columns will be represented on frontend
+        $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
 
-        $columnsState = $this->columnsStateProvider->getState($datagridConfiguration, $datagridParameters);
-        $this->setColumnsState($metadata, $columnsState);
-        $this->updateMetadataColumns($metadata, $columnsState);
+        $columnsMetadata = [];
+        foreach ($columns as $name => $fieldConfig) {
+            $fieldConfig = ColumnConfiguration::createNamed($name, $fieldConfig);
+            $metadata    = $this->getColumnObject($fieldConfig)->getMetadata();
 
-        $defaultColumnsState = $this->columnsStateProvider->getDefaultState($datagridConfiguration);
-        $this->setInitialColumnsState($metadata, $defaultColumnsState);
-        $this->updateMetadataDefaultGridView($metadata, $defaultColumnsState);
-    }
-
-    /**
-     * @param MetadataObject $metadata
-     * @param array $columnsState
-     */
-    private function setInitialColumnsState(MetadataObject $metadata, array $columnsState): void
-    {
-        $metadata->offsetAddToArray('initialState', ['columns' => $columnsState]);
-    }
-
-    /**
-     * @param MetadataObject $metadata
-     * @param array $columnsState
-     */
-    private function updateMetadataDefaultGridView(MetadataObject $metadata, array $columnsState): void
-    {
-        $defaultGridViewKey = array_search(
-            GridViewsExtension::DEFAULT_VIEW_ID,
-            array_column($metadata->offsetGetByPath('[gridViews][views]', []), 'name'),
-            false
-        );
-
-        if ($defaultGridViewKey !== false) {
-            $metadata->offsetSetByPath(
-                sprintf('[gridViews][views][%s][%s]', $defaultGridViewKey, 'columns'),
-                $columnsState
-            );
+            // translate label on backend
+            $metadata['label']    = $metadata[ColumnInterface::TRANSLATABLE_KEY]
+                ? $this->translator->trans($metadata['label'])
+                : $metadata['label'];
+            $columnsMetadata[] = $metadata;
         }
+
+        $data->offsetAddToArray('columns', $columnsMetadata);
     }
 
     /**
-     * @param MetadataObject $metadata
-     * @param array $columnsState
+     * Add column to array of available columns, usually called by DIC
+     *
+     * @param string            $name
+     * @param ColumnInterface $column
      */
-    private function setColumnsState(MetadataObject $metadata, array $columnsState): void
+    public function registerColumn($name, ColumnInterface $column)
     {
-        $metadata->offsetAddToArray('state', ['columns' => $columnsState]);
+        $this->columns[$name] = $column;
     }
 
     /**
-     * @param MetadataObject $metadata
-     * @param array $columnsState
+     * Returns prepared column object
+     *
+     * @param ColumnConfiguration $config
+     *
+     * @return ColumnInterface
      */
-    private function updateMetadataColumns(MetadataObject $metadata, array $columnsState): void
+    protected function getColumnObject(ColumnConfiguration $config)
     {
-        $columns = $metadata->offsetGetOr('columns', []);
-        foreach ($columns as $index => $columnMetadata) {
-            $columnName = $columnMetadata['name'] ?? null;
-            if ($columnName === null) {
-                continue;
-            }
+        $column = $this->columns[$config->offsetGet(Configuration::TYPE_KEY)]->init($config);
 
-            $columnState = $columnsState[$columnName] ?? null;
-            if ($columnState === null) {
-                continue;
-            }
+        return $column;
+    }
 
-            foreach ([ColumnsStateProvider::ORDER_FIELD_NAME, ColumnsStateProvider::RENDER_FIELD_NAME] as $configKey) {
-                $metadata->offsetSetByPath(
-                    sprintf('[%s][%s][%s]', 'columns', $index, $configKey),
-                    $columnState[$configKey]
-                );
-            }
-        }
+     /**
+     * Validates specified type configuration
+     *
+     * @param array  $config
+     * @param string $type
+     *
+     * @return array
+     */
+    protected function validateConfigurationByType($config, $type)
+    {
+        $registeredTypes = array_keys($this->columns);
+        $configuration   = new Configuration($registeredTypes, $type);
+
+        return parent::validateConfiguration($configuration, [$type => $config]);
     }
 }

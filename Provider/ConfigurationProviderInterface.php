@@ -2,29 +2,29 @@
 
 namespace Pintushi\Bundle\GridBundle\Provider;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 
 /**
- * Provides an interface for classes responsible to load datagrid configuration
+ * Provides an interface for classes responsible to load grid configuration
  */
 interface ConfigurationProviderInterface
 {
     /**
      * Checks if this provider can be used to load configuration of a grid with the given name
      *
-     * @param string $gridName The name of a datagrid
+     * @param string $gridName The name of a grid
      *
      * @return bool
      */
     public function isApplicable($gridName);
 
     /**
-     * Returns prepared config for requested datagrid
+     * Returns prepared config for requested grid
      *
-     * @param string $gridName The name of a datagrid
+     * @param string $gridName The name of a grid
      *
-     * @return DatagridConfiguration
-     * @throws \RuntimeException in case when datagrid configuration not found
+     * @return GridConfiguration
+     * @throws \RuntimeException in case when grid configuration not found
      */
     public function getConfiguration($gridName);
 }

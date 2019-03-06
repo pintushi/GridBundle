@@ -13,17 +13,17 @@ class ContainerListener
     /** @var ConfigMetadataDumperInterface */
     private $dumper;
 
-    /** @var ContainerInterface */
-    private $container;
+    /** @var ConfigurationProvider */
+    private $configurationProvider;
 
     /**
      * @param ConfigMetadataDumperInterface $dumper
      * @param ContainerInterface            $container
      */
-    public function __construct(ConfigMetadataDumperInterface $dumper, ContainerInterface $container)
+    public function __construct(ConfigMetadataDumperInterface $dumper, ConfigurationProvider $configurationProvider)
     {
         $this->dumper = $dumper;
-        $this->container = $container;
+        $this->configurationProvider = $configurationProvider;
     }
 
     /**
@@ -35,16 +35,8 @@ class ContainerListener
     {
         if ($event->isMasterRequest() && !$this->dumper->isFresh()) {
             $container = new ContainerBuilder();
-            $this->getConfigurationProvider()->loadConfiguration($container);
+            $this->configurationProvider->loadConfiguration($container);
             $this->dumper->dump($container);
         }
-    }
-
-    /**
-     * @return ConfigurationProvider
-     */
-    private function getConfigurationProvider()
-    {
-        return $this->container->get('pintushi_grid.configuration.provider');
     }
 }

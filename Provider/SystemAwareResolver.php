@@ -27,63 +27,63 @@ class SystemAwareResolver implements ContainerAwareInterface
     }
 
     /**
-     * @param string $datagridName
-     * @param array  $datagridDefinition
+     * @param string $gridName
+     * @param array  $gridDefinition
      * @param bool   $recursion
      *
      * @return array
      */
-    public function resolve($datagridName, $datagridDefinition, $recursion = false)
+    public function resolve($gridName, $gridDefinition, $recursion = false)
     {
-        foreach ($datagridDefinition as $key => $val) {
+        foreach ($gridDefinition as $key => $val) {
             if (is_array($val)) {
                 $this->parentNode         = $val;
-                $datagridDefinition[$key] = $this->resolve($datagridName, $val, true);
+                $gridDefinition[$key] = $this->resolve($gridName, $val, true);
                 continue;
             }
 
-            $val = $this->resolveSystemCall($datagridName, $key, $val);
+            $val = $this->resolveSystemCall($gridName, $key, $val);
             if (!$recursion && self::KEY_EXTENDS === $key) {
                 // get parent grid definition, resolved
                 $definition = $this->container
-                    ->get('pintushi_grid.datagrid.manager')
+                    ->get('pintushi_grid.grid.manager')
                     ->getConfigurationForGrid($val);
 
                 // merge them and remove extend directive
-                $datagridDefinition = ArrayUtil::arrayMergeRecursiveDistinct(
+                $gridDefinition = ArrayUtil::arrayMergeRecursiveDistinct(
                     $definition->toArray(),
-                    $datagridDefinition
+                    $gridDefinition
                 );
-                unset($datagridDefinition['extends']);
+                unset($gridDefinition['extends']);
 
-                $datagridDefinition[self::KEY_EXTENDED_FROM]   = isset($datagridDefinition[self::KEY_EXTENDED_FROM]) ?
-                    $datagridDefinition[self::KEY_EXTENDED_FROM] : [];
-                $datagridDefinition[self::KEY_EXTENDED_FROM][] = $val;
+                $gridDefinition[self::KEY_EXTENDED_FROM]   = isset($gridDefinition[self::KEY_EXTENDED_FROM]) ?
+                    $gridDefinition[self::KEY_EXTENDED_FROM] : [];
+                $gridDefinition[self::KEY_EXTENDED_FROM][] = $val;
 
                 // run resolve again on merged grid definition
-                $datagridDefinition = $this->resolve($val, $datagridDefinition);
+                $gridDefinition = $this->resolve($val, $gridDefinition);
 
                 // break current loop cause we've just extended grid definition
                 break;
             }
 
-            $datagridDefinition[$key] = $val;
+            $gridDefinition[$key] = $val;
         }
 
-        return $datagridDefinition;
+        return $gridDefinition;
     }
 
     /**
      * Replace static call, service call or constant access notation to value they returned
-     * while building datagrid
+     * while building grid
      *
-     * @param string $datagridName
-     * @param string $key key from datagrid definition (columns, filters, sorters, etc)
+     * @param string $gridName
+     * @param string $key key from grid definition (columns, filters, sorters, etc)
      * @param string $val value to be resolved/replaced
      *
      * @return mixed
      */
-    protected function resolveSystemCall($datagridName, $key, $val)
+    protected function resolveSystemCall($gridName, $key, $val)
     {
         // resolve only scalar value, if it's not - value was already resolved
         // this can happen in case of extended grid definitions
@@ -96,7 +96,7 @@ class SystemAwareResolver implements ContainerAwareInterface
         }
 
         while (is_scalar($val) && strpos($val, '::') !== false) {
-            $newVal = $this->resolveStatic($datagridName, $key, $val);
+            $newVal = $this->resolveStatic($gridName, $key, $val);
             if ($newVal == $val) {
                 break;
             }
@@ -104,7 +104,7 @@ class SystemAwareResolver implements ContainerAwareInterface
         }
 
         if (is_scalar($val) && strpos($val, '@') !== false) {
-            $val = $this->resolveService($datagridName, $key, $val);
+            $val = $this->resolveService($gridName, $key, $val);
         }
 
         return $val;
@@ -145,12 +145,12 @@ class SystemAwareResolver implements ContainerAwareInterface
     /**
      * Resolve static call class:method or class::const
      *
-     * @param string $datagridName
+     * @param string $gridName
      * @param string $key
      * @param string $val
      * @return mixed
      */
-    protected function resolveStatic($datagridName, $key, $val)
+    protected function resolveStatic($gridName, $key, $val)
     {
         if (preg_match('#([^\'"%:\s]+)::([\w\._]+)#', $val, $match)) {
             $matchedString = $match[0];
@@ -162,7 +162,7 @@ class SystemAwareResolver implements ContainerAwareInterface
                 return $this->replaceValueInString(
                     $val,
                     $matchedString,
-                    call_user_func_array($classMethod, [$datagridName, $key, $this->parentNode])
+                    call_user_func_array($classMethod, [$gridName, $key, $this->parentNode])
                 );
             } elseif (defined(implode('::', $classMethod))) {
                 return $this->replaceValueInString(
@@ -179,12 +179,12 @@ class SystemAwareResolver implements ContainerAwareInterface
     /**
      * Resolve service or service->method call.
      *
-     * @param string $datagridName
+     * @param string $gridName
      * @param string $key
      * @param string $val
      * @return mixed
      */
-    protected function resolveService($datagridName, $key, $val)
+    protected function resolveService($gridName, $key, $val)
     {
         if (strpos($val, '\@') !== false) {
             return str_replace('\@', '@', $val);
@@ -214,7 +214,7 @@ class SystemAwareResolver implements ContainerAwareInterface
                 $service = $matches['service'];
                 $method = $matches['method'];
                 $arguments = [
-                    $datagridName,
+                    $gridName,
                     $key,
                     $this->parentNode
                 ];

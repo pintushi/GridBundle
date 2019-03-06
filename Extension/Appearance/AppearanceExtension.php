@@ -2,9 +2,9 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension\Appearance;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\MetadataObject;
-use Pintushi\Bundle\GridBundle\Datagrid\ParameterBag;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
+use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
 use Pintushi\Bundle\GridBundle\Extension\AbstractExtension;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -41,7 +41,7 @@ class AppearanceExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(GridConfiguration $config)
     {
         if (!parent::isApplicable($config)) {
             return false;
@@ -79,7 +79,7 @@ class AppearanceExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(GridConfiguration $config)
     {
         $configs = $config->offsetGetOr(self::APPEARANCE_CONFIG_PATH, []);
         if ($configs) {
@@ -103,7 +103,7 @@ class AppearanceExtension extends AbstractExtension
     /**
     * {@inheritDoc}
     */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(GridConfiguration $config, MetadataObject $data)
     {
         $options = $config->offsetGetOr(static::APPEARANCE_CONFIG_PATH, []);
         if (count($options) < 2) {

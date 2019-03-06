@@ -25,7 +25,7 @@ class OrmDatasourceAclListener
      */
     public function onResultBefore(OrmResultBefore $event)
     {
-        $dataGrid = $event->getDatagrid();
+        $dataGrid = $event->getGrid();
         $config = $dataGrid->getConfig();
         if (!$config->isDatasourceSkipAclApply()) {
             $permission = $this->getPermission($dataGrid->getScope());

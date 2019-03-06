@@ -3,12 +3,12 @@
 namespace Pintushi\Bundle\GridBundle\Extension\Toolbar;
 
 use Pintushi\Bundle\ConfigBundle\Config\ConfigManager;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\MetadataObject;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\ResultsObject;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
+use Pintushi\Bundle\GridBundle\Grid\Common\ResultsObject;
 use Pintushi\Bundle\GridBundle\Exception\LogicException;
 use Pintushi\Bundle\GridBundle\Extension\AbstractExtension;
-use Pintushi\Bundle\GridBundle\Provider\DatagridModeProvider;
+use Pintushi\Bundle\GridBundle\Provider\GridModeProvider;
 
 class ToolbarExtension extends AbstractExtension
 {
@@ -31,7 +31,7 @@ class ToolbarExtension extends AbstractExtension
 
     /** {@inheritdoc} */
     protected $excludedModes = [
-        DatagridModeProvider::DATAGRID_IMPORTEXPORT_MODE
+        GridModeProvider::DATAGRID_IMPORTEXPORT_MODE
     ];
 
     /**
@@ -45,7 +45,7 @@ class ToolbarExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(GridConfiguration $config)
     {
         $options = $config->offsetGetByPath(self::TOOLBAR_OPTION_PATH, []);
         // validate configuration and pass default values back to config
@@ -56,19 +56,7 @@ class ToolbarExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitResult(DatagridConfiguration $config, ResultsObject $result)
-    {
-        $result->offsetSetByPath('[options][hideToolbar]', false);
-        $minToolbarRecords = (int)$config->offsetGetByPath(self::TURN_OFF_TOOLBAR_RECORDS_NUMBER_PATH);
-        if ($minToolbarRecords > 0 && count($result->getData()) < $minToolbarRecords) {
-            $result->offsetSetByPath('[options][hideToolbar]', true);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(GridConfiguration $config, MetadataObject $data)
     {
         /**
          * Default toolbar options

@@ -3,35 +3,35 @@
 namespace Pintushi\Bundle\GridBundle\Event;
 
 use Doctrine\ORM\QueryBuilder;
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class OrmResultBeforeQuery extends Event implements GridEventInterface
 {
     const NAME = 'pintushi_grid.orm_datasource.result.before_query';
 
-    /** @var DatagridInterface */
-    protected $datagrid;
+    /** @var GridInterface */
+    protected $grid;
 
     /** @var QueryBuilder */
     protected $qb;
 
     /**
-     * @param DatagridInterface $datagrid
+     * @param GridInterface $grid
      * @param QueryBuilder $qb
      */
-    public function __construct(DatagridInterface $datagrid, QueryBuilder $qb)
+    public function __construct(GridInterface $grid, QueryBuilder $qb)
     {
-        $this->datagrid = $datagrid;
+        $this->grid = $grid;
         $this->qb = $qb;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDatagrid()
+    public function getGrid()
     {
-        return $this->datagrid;
+        return $this->grid;
     }
 
     /**

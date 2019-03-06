@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension\Sorter;
 
-use Pintushi\Bundle\GridBundle\Extension\Formatter\Property\PropertyInterface;
+use Pintushi\Bundle\GridBundle\Extension\Columns\ColumnInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -36,9 +36,9 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode(static::COLUMNS_KEY)
                     ->prototype('array')
                         ->children()
-                            ->scalarNode(PropertyInterface::DATA_NAME_KEY)->isRequired()->end()
-                            ->booleanNode(PropertyInterface::DISABLED_KEY)->end()
-                            ->scalarNode(PropertyInterface::TYPE_KEY)->end()
+                            ->scalarNode(ColumnInterface::DATA_PATH_KEY)->isRequired()->end()
+                            ->booleanNode(ColumnInterface::DISABLED_KEY)->end()
+                            ->scalarNode(ColumnInterface::TYPE_KEY)->end()
                             ->variableNode('apply_callback')->end()
                         ->end()
                     ->end()

@@ -2,8 +2,8 @@
 
 namespace Pintushi\Bundle\GridBundle\EventListener;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\ParameterBag;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
 use Pintushi\Bundle\GridBundle\Event\PreBuild;
 use Pintushi\Bundle\GridBundle\Tools\MixinConfigurationHelper;
 
@@ -26,12 +26,12 @@ class MixinListener
     }
 
     /**
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      * @param ParameterBag          $parameters
      *
      * @return bool
      */
-    public function isApplicable(DatagridConfiguration $config, ParameterBag $parameters)
+    public function isApplicable(GridConfiguration $config, ParameterBag $parameters)
     {
         return $parameters->get(self::GRID_MIXIN, false) || $config->offsetGetOr(self::MIXINS, false);
     }
@@ -58,12 +58,12 @@ class MixinListener
     }
 
     /**
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      * @param ParameterBag          $parameters
      *
      * @return string[]
      */
-    protected function getMixins(DatagridConfiguration $config, ParameterBag $parameters)
+    protected function getMixins(GridConfiguration $config, ParameterBag $parameters)
     {
         $mixins = (array)$config->offsetGetOr(self::MIXINS, []);
 

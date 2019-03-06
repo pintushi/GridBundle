@@ -2,8 +2,8 @@
 
 namespace Pintushi\Bundle\GridBundle\Provider\SelectedFields;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\ParameterBag;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
 
 /**
  * Composite provider which returns selected fields from all inner providers.
@@ -25,13 +25,13 @@ class SelectedFieldsProvider implements SelectedFieldsProviderInterface
      * {@inheritdoc}
      */
     public function getSelectedFields(
-        DatagridConfiguration $datagridConfiguration,
-        ParameterBag $datagridParameters
+        GridConfiguration $gridConfiguration,
+        ParameterBag $gridParameters
     ): array {
         $selectedFields = [[]];
         foreach ($this->selectedFieldsProviders as $selectedFieldsProvider) {
             $selectedFields[] = $selectedFieldsProvider
-                ->getSelectedFields($datagridConfiguration, $datagridParameters);
+                ->getSelectedFields($gridConfiguration, $gridParameters);
         }
 
         return array_unique(array_merge(...$selectedFields));

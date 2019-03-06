@@ -2,14 +2,14 @@
 
 namespace Pintushi\Bundle\GridBundle\Event;
 
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 
 interface GridEventInterface
 {
     /**
-     * Getter for datagrid
+     * Getter for grid
      *
-     * @return DatagridInterface
+     * @return GridInterface
      */
-    public function getDatagrid();
+    public function getGrid();
 }

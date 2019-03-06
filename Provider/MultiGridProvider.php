@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Provider;
 
-use Pintushi\Bundle\GridBundle\Datagrid\ManagerInterface;
+use Pintushi\Bundle\GridBundle\Grid\ManagerInterface;
 use Pintushi\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

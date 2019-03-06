@@ -2,8 +2,8 @@
 
 namespace Pintushi\Bundle\GridBundle\Provider\SelectedFields;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\ParameterBag;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
 use Pintushi\Bundle\GridBundle\Extension\Formatter\Configuration;
 use Pintushi\Bundle\GridBundle\Provider\State\ColumnsStateProvider;
 
@@ -16,9 +16,9 @@ class SelectedFieldsFromColumnsProvider extends AbstractSelectedFieldsProvider
     /**
      * {@inheritdoc}
      */
-    protected function getState(DatagridConfiguration $datagridConfiguration, ParameterBag $datagridParameters): array
+    protected function getState(GridConfiguration $gridConfiguration, ParameterBag $gridParameters): array
     {
-        $state = parent::getState($datagridConfiguration, $datagridParameters);
+        $state = parent::getState($gridConfiguration, $gridParameters);
 
         return array_filter(
             $state,
@@ -31,8 +31,8 @@ class SelectedFieldsFromColumnsProvider extends AbstractSelectedFieldsProvider
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration(DatagridConfiguration $datagridConfiguration): array
+    protected function getConfiguration(GridConfiguration $gridConfiguration): array
     {
-        return (array)$datagridConfiguration->offsetGet(Configuration::COLUMNS_KEY);
+        return (array)$gridConfiguration->offsetGet(Configuration::COLUMNS_KEY);
     }
 }

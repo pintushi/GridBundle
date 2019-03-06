@@ -2,36 +2,36 @@
 
 namespace Pintushi\Bundle\GridBundle\Provider\SelectedFields;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\ParameterBag;
-use Pintushi\Bundle\GridBundle\Provider\State\DatagridStateProviderInterface;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
+use Pintushi\Bundle\GridBundle\Provider\State\GridStateProviderInterface;
 
 /**
  * Abstract implementation of provider that must return an array of field names which must be present in select
- * statement of datasource query used by some datagrid component, e.g. columns, sorters.
+ * statement of datasource query used by some grid component, e.g. columns, sorters.
  */
 abstract class AbstractSelectedFieldsProvider implements SelectedFieldsProviderInterface
 {
-    /** @var DatagridStateProviderInterface */
-    protected $datagridStateProvider;
+    /** @var GridStateProviderInterface */
+    protected $gridStateProvider;
 
     /**
-     * @param DatagridStateProviderInterface $datagridStateProvider
+     * @param GridStateProviderInterface $gridStateProvider
      */
-    public function __construct(DatagridStateProviderInterface $datagridStateProvider)
+    public function __construct(GridStateProviderInterface $gridStateProvider)
     {
-        $this->datagridStateProvider = $datagridStateProvider;
+        $this->gridStateProvider = $gridStateProvider;
     }
 
     /**
      * {@inheritdoc}
      */
     public function getSelectedFields(
-        DatagridConfiguration $datagridConfiguration,
-        ParameterBag $datagridParameters
+        GridConfiguration $gridConfiguration,
+        ParameterBag $gridParameters
     ): array {
-        $configuration = $this->getConfiguration($datagridConfiguration);
-        $state = $this->getState($datagridConfiguration, $datagridParameters);
+        $configuration = $this->getConfiguration($gridConfiguration);
+        $state = $this->getState($gridConfiguration, $gridParameters);
 
         return array_map(function (string $name) use ($configuration) {
             return $configuration[$name]['property_path'] ?? $name;
@@ -41,22 +41,22 @@ abstract class AbstractSelectedFieldsProvider implements SelectedFieldsProviderI
     /**
      * Returns state of component.
      *
-     * @param DatagridConfiguration $datagridConfiguration
-     * @param ParameterBag $datagridParameters
+     * @param GridConfiguration $gridConfiguration
+     * @param ParameterBag $gridParameters
      *
      * @return array
      */
-    protected function getState(DatagridConfiguration $datagridConfiguration, ParameterBag $datagridParameters)
+    protected function getState(GridConfiguration $gridConfiguration, ParameterBag $gridParameters)
     {
-        return (array)$this->datagridStateProvider->getState($datagridConfiguration, $datagridParameters);
+        return (array)$this->gridStateProvider->getState($gridConfiguration, $gridParameters);
     }
 
     /**
      * Must return the configuration of component (e.g. columns or sorters)
      *
-     * @param DatagridConfiguration $datagridConfiguration
+     * @param GridConfiguration $gridConfiguration
      *
      * @return array
      */
-    abstract protected function getConfiguration(DatagridConfiguration $datagridConfiguration);
+    abstract protected function getConfiguration(GridConfiguration $gridConfiguration);
 }

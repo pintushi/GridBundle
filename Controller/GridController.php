@@ -2,8 +2,8 @@
 
 namespace Pintushi\Bundle\GridBundle\Controller;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Manager;
-use Pintushi\Bundle\GridBundle\Datagrid\RequestParameterBagFactory;
+use Pintushi\Bundle\GridBundle\Grid\Manager;
+use Pintushi\Bundle\GridBundle\Grid\RequestParameterBagFactory;
 use Pintushi\Bundle\GridBundle\Exception\LogicException;
 use Pintushi\Bundle\GridBundle\Exception\UserInputErrorExceptionInterface;
 use Pintushi\Bundle\GridBundle\Extension\Export\Configuration;
@@ -60,7 +60,7 @@ class GridController extends Controller
      */
     public function getAction($gridName)
     {
-        $gridManager = $this->get('pintushi_grid.datagrid.manager');
+        $gridManager = $this->get('pintushi_grid.grid.manager');
         $gridConfig  = $gridManager->getConfigurationForGrid($gridName);
         $acl         = $gridConfig->getAclResource();
 
@@ -68,7 +68,7 @@ class GridController extends Controller
             throw new AccessDeniedException('Access denied.');
         }
 
-        $grid = $gridManager->getDatagridByRequestParams($gridName);
+        $grid = $gridManager->getGridByRequestParams($gridName);
 
         try {
             $result = $grid->getData();
@@ -95,7 +95,7 @@ class GridController extends Controller
     {
         $filterNames = $request->query->get('filterNames', []);
 
-        $gridManager = $this->get('pintushi_grid.datagrid.manager');
+        $gridManager = $this->get('pintushi_grid.grid.manager');
         $gridConfig  = $gridManager->getConfigurationForGrid($gridName);
         $acl         = $gridConfig->getAclResource();
 
@@ -103,7 +103,7 @@ class GridController extends Controller
             throw new AccessDeniedException('Access denied.');
         }
 
-        $grid = $gridManager->getDatagridByRequestParams($gridName);
+        $grid = $gridManager->getGridByRequestParams($gridName);
         $meta = $grid->getResolvedMetadata();
 
         $filterData = [];
@@ -150,7 +150,7 @@ class GridController extends Controller
      */
     protected function getRequestParametersFactory()
     {
-        return $this->get('pintushi_grid.datagrid.request_parameters_factory');
+        return $this->get('pintushi_grid.grid.request_parameters_factory');
     }
 
     /**
@@ -158,6 +158,6 @@ class GridController extends Controller
      */
     protected function getGridManager()
     {
-        return $this->get('pintushi_grid.datagrid.manager');
+        return $this->get('pintushi_grid.grid.manager');
     }
 }

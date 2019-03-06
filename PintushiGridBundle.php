@@ -19,10 +19,10 @@ class PintushiGridBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new CompilerPass\ConfigurationPass());
-        $container->addCompilerPass(new CompilerPass\FormattersPass());
-        $container->addCompilerPass(new CompilerPass\ActionsPass());
+        // $container->addCompilerPass(new CompilerPass\ActionsPass());
         $container->addCompilerPass(new CompilerPass\GuessPass());
-        $container->addCompilerPass(new CompilerPass\SetDatagridEventListenersLazyPass());
+        $container->addCompilerPass(new CompilerPass\ColumnsPass());
+        $container->addCompilerPass(new CompilerPass\SetGridEventListenersLazyPass());
         $container->addCompilerPass(new CompilerPass\SelectedFieldsProvidersPass());
     }
 }

@@ -25,7 +25,7 @@ class QueryBuilderProcessor
     public function processQuery(array $config)
     {
         if (array_key_exists('query_builder', $config)) {
-            $qb = $config['query_builder']; // "@service.name->getDatagridQb"
+            $qb = $config['query_builder']; // "@service.name->getGridQb"
             if ($qb instanceof QueryBuilder) {
                 return $qb;
             } else {

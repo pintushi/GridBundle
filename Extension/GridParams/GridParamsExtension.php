@@ -2,8 +2,8 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension\GridParams;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\MetadataObject;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
 use Pintushi\Bundle\GridBundle\Extension\AbstractExtension;
 
 /**
@@ -14,7 +14,7 @@ class GridParamsExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(GridConfiguration $config)
     {
         return
             parent::isApplicable($config)
@@ -24,7 +24,7 @@ class GridParamsExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(GridConfiguration $config, MetadataObject $data)
     {
         $params = $this->getParameters()->all();
         $gridParams = array_filter(

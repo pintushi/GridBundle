@@ -2,32 +2,32 @@
 
 namespace Pintushi\Bundle\GridBundle\Event;
 
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class BuildBefore
  * @package Pintushi\Bundle\GridBundle\Event
  *
- * This event dispatched after datagrid builder finish building datasource for datagrid
+ * This event dispatched after grid builder finish building datasource for grid
  */
 class BuildAfter extends Event implements GridEventInterface
 {
-    const NAME = 'pintushi_grid.datagrid.build.after';
+    const NAME = 'pintushi_grid.grid.build.after';
 
-    /** @var DatagridInterface */
-    protected $datagrid;
+    /** @var GridInterface */
+    protected $grid;
 
-    public function __construct(DatagridInterface $datagrid)
+    public function __construct(GridInterface $grid)
     {
-        $this->datagrid = $datagrid;
+        $this->grid = $grid;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDatagrid()
+    public function getGrid()
     {
-        return $this->datagrid;
+        return $this->grid;
     }
 }

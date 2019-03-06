@@ -2,10 +2,10 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\MetadataObject;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\ResultsObject;
-use Pintushi\Bundle\GridBundle\Datagrid\ParameterBag;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
+use Pintushi\Bundle\GridBundle\Grid\Common\ResultsObject;
+use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
@@ -18,8 +18,8 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     protected $parameters;
 
     /**
-     * Full list of datagrid modes
-     * @see \Pintushi\Bundle\GridBundle\Provider\DatagridModeProvider
+     * Full list of grid modes
+     * @see \Pintushi\Bundle\GridBundle\Provider\GridModeProvider
      *
      * @var array of modes that are not supported by this extension
      */
@@ -28,36 +28,36 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(GridConfiguration $config)
     {
-        return $this->isExtensionSupportedDatagridModes();
+        return $this->isExtensionSupportedGridModes();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
+    public function processConfigs(GridConfiguration $config)
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitDatasource(GridConfiguration $config, DatasourceInterface $datasource)
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visitResult(DatagridConfiguration $config, ResultsObject $result)
+    public function visitMetadata(GridConfiguration $config, MetadataObject $data)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function visitResult(GridConfiguration $config, ResultsObject $result)
     {
     }
 
@@ -108,17 +108,17 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     }
 
     /**
-     * Checking that extension is supported all datagrid modes.
+     * Checking that extension is supported all grid modes.
      *
      * @return bool
      */
-    private function isExtensionSupportedDatagridModes()
+    private function isExtensionSupportedGridModes()
     {
-        $datagridModes = $this->getParameters()->get(ParameterBag::DATAGRID_MODES_PARAMETER, []);
-        if ([] === $datagridModes || [] === $this->excludedModes) {
+        $gridModes = $this->getParameters()->get(ParameterBag::DATAGRID_MODES_PARAMETER, []);
+        if ([] === $gridModes || [] === $this->excludedModes) {
             return true;
         }
 
-        return empty(array_intersect($this->excludedModes, $datagridModes));
+        return empty(array_intersect($this->excludedModes, $gridModes));
     }
 }

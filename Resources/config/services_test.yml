@@ -1,7 +1,0 @@
-services:
-    pintushi_grid.tests.datagrid_orm_query_collector:
-        class: Pintushi\Bundle\GridBundle\Tests\Functional\Environment\DatagridQueryCollector
-        decorates: pintushi_grid.orm.query_executor
-        decoration_priority: -255
-        arguments:
-            - '@pintushi_grid.tests.datagrid_orm_query_collector.inner'

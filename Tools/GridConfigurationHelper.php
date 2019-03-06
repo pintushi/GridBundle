@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Tools;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\EntityBundle\ORM\EntityClassResolver;
 
 /**
@@ -22,12 +22,12 @@ class GridConfigurationHelper
     }
 
     /**
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      *
      * @return string|null
      * @deprecated since 2.0. Use config->getOrmQuery()->getRootEntity(entityClassResolver, true) instead
      */
-    public function getEntity(DatagridConfiguration $config)
+    public function getEntity(GridConfiguration $config)
     {
         $entityClassName = $config->offsetGetOr('extended_entity_name');
         if ($entityClassName) {
@@ -38,12 +38,12 @@ class GridConfigurationHelper
     }
 
     /**
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      *
      * @return null
      * @deprecated since 2.0. Use config->getOrmQuery()->getRootAlias() instead
      */
-    public function getEntityRootAlias(DatagridConfiguration $config)
+    public function getEntityRootAlias(GridConfiguration $config)
     {
         return $config->getOrmQuery()->getRootAlias();
     }

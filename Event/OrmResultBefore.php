@@ -4,23 +4,23 @@ namespace Pintushi\Bundle\GridBundle\Event;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query;
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class ResultBefore
  * @package Pintushi\Bundle\GridBundle\Event
  *
- * This event is dispatched before datagrid builder starts to build result
+ * This event is dispatched before grid builder starts to build result
  */
 class OrmResultBefore extends Event implements GridEventInterface
 {
     const NAME = 'pintushi_grid.orm_datasource.result.before';
 
     /**
-     * @var DatagridInterface
+     * @var GridInterface
      */
-    protected $datagrid;
+    protected $grid;
 
     /**
      * @var AbstractQuery
@@ -28,21 +28,21 @@ class OrmResultBefore extends Event implements GridEventInterface
     protected $query;
 
     /**
-     * @param DatagridInterface   $datagrid
+     * @param GridInterface   $grid
      * @param AbstractQuery $query
      */
-    public function __construct(DatagridInterface $datagrid, AbstractQuery $query)
+    public function __construct(GridInterface $grid, AbstractQuery $query)
     {
-        $this->datagrid = $datagrid;
+        $this->grid = $grid;
         $this->query    = $query;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDatagrid()
+    public function getGrid()
     {
-        return $this->datagrid;
+        return $this->grid;
     }
 
     /**

@@ -5,7 +5,7 @@ namespace Pintushi\Bundle\GridBundle\Tools;
 use Pintushi\Bundle\LocaleBundle\Model\LocaleSettings;
 
 /**
- * A set of method to simplify building "date" related columns in datagrids.
+ * A set of method to simplify building "date" related columns in grids.
  */
 class DateHelper
 {

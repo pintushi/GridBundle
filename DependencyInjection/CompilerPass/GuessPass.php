@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class GuessPass implements CompilerPassInterface
 {
-    const COLUMN_OPTIONS_GUESSER_ID       = 'pintushi_grid.datagrid.guesser';
+    const COLUMN_OPTIONS_GUESSER_ID       = 'pintushi_grid.grid.guesser';
     const COLUMN_OPTIONS_GUESSER_TAG_NAME = 'pintushi_grid.column_options_guesser';
 
     /**

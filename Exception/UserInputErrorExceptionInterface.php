@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Exception;
 
-interface UserInputErrorExceptionInterface extends DatagridException
+interface UserInputErrorExceptionInterface extends GridException
 {
     const TYPE = 'user_input_error';
 

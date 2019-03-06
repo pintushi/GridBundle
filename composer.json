@@ -1,8 +1,14 @@
 {
     "name": "pintushi/grid-bundle",
     "type": "symfony-bundle",
-    "description": "BAP Grid Bundle",
-    "keywords": ["BAP", "Grid"],
+    "description": "Pintushi Grid Bundle",
+    "keywords": ["Pintushi", "Grid"],
+    "authors": [
+        {
+            "name": "Vidy Videni",
+            "homepage": "https://github.com/videni"
+        }
+    ],
     "license": "MIT",
     "require": {
         "php": "7.1.*",

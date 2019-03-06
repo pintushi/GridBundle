@@ -1,7 +1,7 @@
 pintushi_grid_bundle:
     resource: "@PintushiGridBundle/Controller"
     type:     annotation
-    prefix:   /datagrid
+    prefix:   /grid
 
 pintushi_grid_api:
     resource: "@PintushiGridBundle/Resources/config/oro/routing_api.yml"

@@ -2,18 +2,18 @@
 
 namespace Pintushi\Bundle\GridBundle\Provider\State;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\ParameterBag;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
 use Pintushi\Bundle\GridBundle\Entity\Manager\GridViewManager;
-use Pintushi\Bundle\GridBundle\Extension\Columns\ColumnsExtension;
-use Pintushi\Bundle\GridBundle\Extension\Formatter\Configuration;
-use Pintushi\Bundle\GridBundle\Tools\DatagridParametersHelper;
+use Pintushi\Bundle\GridBundle\Extension\Columns\ColumnStateExtension;
+use Pintushi\Bundle\GridBundle\Extension\Columns\Configuration;
+use Pintushi\Bundle\GridBundle\Tools\GridParametersHelper;
 use Pintushi\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 
 /**
- * Provides request- and user-specific datagrid state for columns component.
- * Tries to fetch state from datagrid parameters, then fallbacks to state from current datagrid view, then from default
- * datagrid view, then to datagrid columns configuration.
+ * Provides request- and user-specific grid state for columns component.
+ * Tries to fetch state from grid parameters, then fallbacks to state from current grid view, then from default
+ * grid view, then to grid columns configuration.
  * State is respresented by an array with column names as key and array with the following keys as values:
  * - renderable: whether a column must be displayed on frontend
  * - order: column order (weight)
@@ -23,61 +23,61 @@ class ColumnsStateProvider extends AbstractStateProvider
     public const RENDER_FIELD_NAME = 'renderable';
     public const ORDER_FIELD_NAME = 'order';
 
-    /** @var DatagridParametersHelper */
-    private $datagridParametersHelper;
+    /** @var GridParametersHelper */
+    private $gridParametersHelper;
 
     /**
      * @param GridViewManager $gridViewManager
      * @param TokenAccessorInterface $tokenAccessor
-     * @param DatagridParametersHelper $datagridParametersHelper
+     * @param GridParametersHelper $gridParametersHelper
      */
     public function __construct(
         GridViewManager $gridViewManager,
         TokenAccessorInterface $tokenAccessor,
-        DatagridParametersHelper $datagridParametersHelper
+        GridParametersHelper $gridParametersHelper
     ) {
         parent::__construct($gridViewManager, $tokenAccessor);
-        $this->datagridParametersHelper = $datagridParametersHelper;
+        $this->gridParametersHelper = $gridParametersHelper;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getState(DatagridConfiguration $datagridConfiguration, ParameterBag $datagridParameters): array
+    public function getState(GridConfiguration $gridConfiguration, ParameterBag $gridParameters): array
     {
-        // Fetch state from datagrid parameters.
-        $state = $this->getFromParameters($datagridParameters);
+        // Fetch state from grid parameters.
+        $state = $this->getFromParameters($gridParameters);
 
         // Try to fetch state from grid view.
         if (!$state) {
-            $gridView = $this->getActualGridView($datagridConfiguration, $datagridParameters);
+            $gridView = $this->getActualGridView($gridConfiguration, $gridParameters);
             if ($gridView) {
                 $state = $gridView->getColumnsData();
             }
         }
 
-        return $this->sanitizeState($state, $this->getColumnsConfig($datagridConfiguration));
+        return $this->sanitizeState($state, $this->getColumnsConfig($gridConfiguration));
     }
 
     /**
      * {@inheritdoc}
      */
     public function getStateFromParameters(
-        DatagridConfiguration $datagridConfiguration,
-        ParameterBag $datagridParameters
+        GridConfiguration $gridConfiguration,
+        ParameterBag $gridParameters
     ): array {
-        // Fetch state from datagrid parameters.
-        $state = $this->getFromParameters($datagridParameters);
+        // Fetch state from grid parameters.
+        $state = $this->getFromParameters($gridParameters);
 
-        return $this->sanitizeState($state, $this->getColumnsConfig($datagridConfiguration));
+        return $this->sanitizeState($state, $this->getColumnsConfig($gridConfiguration));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultState(DatagridConfiguration $datagridConfiguration): array
+    public function getDefaultState(GridConfiguration $gridConfiguration): array
     {
-        return $this->sanitizeState([], $this->getColumnsConfig($datagridConfiguration));
+        return $this->sanitizeState([], $this->getColumnsConfig($gridConfiguration));
     }
 
     /**
@@ -98,9 +98,9 @@ class ColumnsStateProvider extends AbstractStateProvider
     /**
      * {@inheritdoc}
      */
-    private function getFromParameters(ParameterBag $datagridParameters): array
+    private function getFromParameters(ParameterBag $gridParameters): array
     {
-        $rawColumnsState = $this->getRawColumnsState($datagridParameters);
+        $rawColumnsState = $this->getRawColumnsState($gridParameters);
         if (!$rawColumnsState) {
             return [];
         }
@@ -115,19 +115,19 @@ class ColumnsStateProvider extends AbstractStateProvider
     }
 
     /**
-     * @param ParameterBag $datagridParameters
+     * @param ParameterBag $gridParameters
      *
      * @return array|string
      */
-    private function getRawColumnsState(ParameterBag $datagridParameters)
+    private function getRawColumnsState(ParameterBag $gridParameters)
     {
-        $rawColumnsState = $this->datagridParametersHelper
-            ->getFromParameters($datagridParameters, ColumnsExtension::COLUMNS_PARAM);
+        $rawColumnsState = $this->gridParametersHelper
+            ->getFromParameters($gridParameters, ColumnStateExtension::COLUMNS_PARAM);
 
         // Try to fetch from minified parameters if any.
         if (!$rawColumnsState) {
-            $rawColumnsState = $this->datagridParametersHelper
-                ->getFromMinifiedParameters($datagridParameters, ColumnsExtension::MINIFIED_COLUMNS_PARAM);
+            $rawColumnsState = $this->gridParametersHelper
+                ->getFromMinifiedParameters($gridParameters, ColumnStateExtension::MINIFIED_COLUMNS_PARAM);
         }
 
         return $rawColumnsState;
@@ -177,13 +177,13 @@ class ColumnsStateProvider extends AbstractStateProvider
     }
 
     /**
-     * @param DatagridConfiguration $datagridConfiguration
+     * @param GridConfiguration $gridConfiguration
      *
      * @return array
      */
-    private function getColumnsConfig(DatagridConfiguration $datagridConfiguration): array
+    private function getColumnsConfig(GridConfiguration $gridConfiguration): array
     {
-        return (array)$datagridConfiguration->offsetGet(Configuration::COLUMNS_KEY);
+        return (array)$gridConfiguration->offsetGet(Configuration::COLUMNS_KEY);
     }
 
     /**

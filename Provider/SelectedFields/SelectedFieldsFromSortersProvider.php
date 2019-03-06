@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Provider\SelectedFields;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Extension\Sorter\Configuration as SorterConfiguration;
 
 /**
@@ -14,8 +14,8 @@ class SelectedFieldsFromSortersProvider extends AbstractSelectedFieldsProvider
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration(DatagridConfiguration $datagridConfiguration): array
+    protected function getConfiguration(GridConfiguration $gridConfiguration): array
     {
-        return $datagridConfiguration->offsetGetByPath(SorterConfiguration::COLUMNS_PATH, []);
+        return $gridConfiguration->offsetGetByPath(SorterConfiguration::COLUMNS_PATH, []);
     }
 }

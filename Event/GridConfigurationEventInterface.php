@@ -2,14 +2,14 @@
 
 namespace Pintushi\Bundle\GridBundle\Event;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 
 interface GridConfigurationEventInterface
 {
     /**
-     * Getter for datagrid configuration
+     * Getter for grid configuration
      *
-     * @return DatagridConfiguration
+     * @return GridConfiguration
      */
     public function getConfig();
 }

@@ -7,7 +7,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Class Configuration for create datagrid toolbar configuration tree
+ * Class Configuration for create grid toolbar configuration tree
  * @package Pintushi\Bundle\GridBundle\Extension\Toolbar
  */
 class Configuration implements ConfigurationInterface
@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('hide')->defaultFalse()->end()
                 ->booleanNode('addResetAction')->defaultTrue()->end()
                 ->booleanNode('addRefreshAction')->defaultTrue()->end()
-                ->booleanNode('addDatagridSettingsManager')->defaultTrue()->end()
+                ->booleanNode('addGridSettingsManager')->defaultTrue()->end()
                 ->integerNode('turnOffToolbarRecordsNumber')->defaultValue(0)->end()
                 ->arrayNode('pageSize')->addDefaultsIfNotSet()
                     ->children()
@@ -61,7 +61,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('bottom')->defaultFalse()->end()
                     ->end()
                 ->end()
-                ->arrayNode('datagridSettings')
+                ->arrayNode('gridSettings')
                     ->children()
                     ->scalarNode('minVisibleColumnsQuantity')->end()
                 ->end()

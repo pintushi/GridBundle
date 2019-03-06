@@ -3,7 +3,7 @@
 namespace Pintushi\Bundle\GridBundle\Provider;
 
 use Doctrine\Common\Cache\CacheProvider;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Exception\RuntimeException;
 use Oro\Component\Config\Loader\CumulativeConfigLoader;
 use Oro\Component\Config\Loader\YamlCumulativeFileLoader;
@@ -64,7 +64,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
             $this->processedConfiguration[$gridName] = $config;
         }
 
-        return DatagridConfiguration::createNamed($gridName, $this->processedConfiguration[$gridName]);
+        return GridConfiguration::createNamed($gridName, $this->processedConfiguration[$gridName]);
     }
 
     /**
@@ -75,7 +75,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
     public function getRawConfiguration($gridName)
     {
         if (!$this->isApplicable($gridName)) {
-            throw new RuntimeException(sprintf('A configuration for "%s" datagrid was not found.', $gridName));
+            throw new RuntimeException(sprintf('A configuration for "%s" grid was not found.', $gridName));
         }
 
         return $this->rawConfiguration[$gridName];
@@ -110,7 +110,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
     public function loadConfiguration(ContainerBuilder $container = null)
     {
         $config = [];
-        $configLoader = $this->getDatagridConfigurationLoader();
+        $configLoader = $this->getGridConfigurationLoader();
         $resources = $configLoader->load($container);
         foreach ($resources as $resource) {
             if (isset($resource->data[self::ROOT_PARAMETER])) {
@@ -150,7 +150,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
     /**
      * @return CumulativeConfigLoader
      */
-    private function getDatagridConfigurationLoader()
+    private function getGridConfigurationLoader()
     {
         return new CumulativeConfigLoader(
             'pintushi_grid',

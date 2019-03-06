@@ -24,12 +24,12 @@ class UrlConverter
     }
 
     /**
-     * @param string $datagridName
+     * @param string $gridName
      * @param string $url
      *
      * @return string
      */
-    public function convertGridUrlToPageUrl(string $datagridName, string $url)
+    public function convertGridUrlToPageUrl(string $gridName, string $url)
     {
         $urlParameters = [];
 
@@ -38,18 +38,18 @@ class UrlConverter
         $urlParametersStr = $parts[1] ?? '';
 
         parse_str($urlParametersStr, $urlParameters);
-        if (empty($urlParameters[$datagridName][DefaultOperationRequestHelper::ORIGINAL_ROUTE_URL_PARAMETER_KEY])) {
+        if (empty($urlParameters[$gridName][DefaultOperationRequestHelper::ORIGINAL_ROUTE_URL_PARAMETER_KEY])) {
             return $url;
         }
 
-        $originalRoute = $urlParameters[$datagridName][DefaultOperationRequestHelper::ORIGINAL_ROUTE_URL_PARAMETER_KEY];
+        $originalRoute = $urlParameters[$gridName][DefaultOperationRequestHelper::ORIGINAL_ROUTE_URL_PARAMETER_KEY];
         $originalRouteUrl = $this->router->generate($originalRoute);
         if ($originalRouteUrl === $baseUrl) {
             return $url;
         }
 
         $urlParams = [
-            $datagridName => $urlParameters[$datagridName]
+            $gridName => $urlParameters[$gridName]
         ];
         return $originalRouteUrl . '?' . \http_build_query($urlParams);
     }

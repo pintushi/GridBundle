@@ -17,11 +17,11 @@ interface ParameterBinderAwareInterface
     public function getParameterBinder();
 
     /**
-     * Binds datagrid parameters to datasource query.
+     * Binds grid parameters to datasource query.
      *
      * @see ParameterBinderInterface::bindParameters
-     * @param array $datasourceToDatagridParameters
+     * @param array $datasourceToGridParameters
      * @param bool $append
      */
-    public function bindParameters(array $datasourceToDatagridParameters, $append = true);
+    public function bindParameters(array $datasourceToGridParameters, $append = true);
 }

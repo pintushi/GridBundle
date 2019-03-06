@@ -1,52 +1,14 @@
 parameters:
     pintushi_grid.extension.toolbar.class:          Pintushi\Bundle\GridBundle\Extension\Toolbar\ToolbarExtension
-    pintushi_grid.extension.formatter.class:        Pintushi\Bundle\GridBundle\Extension\Formatter\FormatterExtension
-    pintushi_grid.extension.orm_pager.class:        Pintushi\Bundle\GridBundle\Extension\Pager\OrmPagerExtension
-    pintushi_grid.extension.pager.orm.pager.class:  Pintushi\Bundle\GridBundle\Extension\Pager\Orm\Pager
     pintushi_grid.extension.orm_sorter.class:       Pintushi\Bundle\GridBundle\Extension\Sorter\OrmSorterExtension
-    pintushi_grid.extension.action.class:           Pintushi\Bundle\GridBundle\Extension\Action\ActionExtension
     pintushi_grid.extension.views.class:            Pintushi\Bundle\GridBundle\Extension\GridViews\GridViewsExtension
     pintushi_grid.extension.gridparams.class:       Pintushi\Bundle\GridBundle\Extension\GridParams\GridParamsExtension
-    pintushi_grid.extension.totals.class:           Pintushi\Bundle\GridBundle\Extension\Totals\OrmTotalsExtension
-    pintushi_grid.extension.columns.class:          Pintushi\Bundle\GridBundle\Extension\Columns\ColumnsExtension
     pintushi_grid.extension.mode.class:             Pintushi\Bundle\GridBundle\Extension\Mode\ModeExtension
     pintushi_grid.extension.appearance.class:       Pintushi\Bundle\GridBundle\Extension\Appearance\AppearanceExtension
+    pintushi_grid.extension.column_state.class:     Pintushi\Bundle\GridBundle\Extension\Columns\ColumnStateExtension
+    pintushi_grid.extension.columns.class:          Pintushi\Bundle\GridBundle\Extension\Columns\ColumnsExtension
 
 services:
-    pintushi_grid.extension.formatter:
-        class: '%pintushi_grid.extension.formatter.class%'
-        arguments:
-            - '@translator'
-        tags:
-            - { name: pintushi_grid.extension }
-
-    pintushi_grid.extension.orm_pager:
-        class: '%pintushi_grid.extension.orm_pager.class%'
-        arguments:
-            - '@pintushi_grid.extension.pager.orm.pager'
-        tags:
-            - { name: pintushi_grid.extension }
-
-    pintushi_grid.extension.array_pager:
-        class: 'Pintushi\Bundle\GridBundle\Extension\Pager\ArrayPagerExtension'
-        arguments:
-            - '@pintushi_grid.extension.pager.array.pager'
-        tags:
-            - { name: pintushi_grid.extension }
-
-    pintushi_grid.extension.pager.orm.pager:
-        public: false
-        class: '%pintushi_grid.extension.pager.orm.pager.class%'
-        arguments:
-            - '@pintushi_security.acl_helper'
-            - '@pintushi.orm.query_builder.count_query_optimizer'
-            - '@pintushi_entity.query_hint_resolver'
-            - '@pintushi_grid.orm.query_executor'
-
-    pintushi_grid.extension.pager.array.pager:
-        public: false
-        class: Pintushi\Bundle\GridBundle\Extension\Pager\ArrayDatasource\ArrayPager
-
     pintushi_grid.extension.orm_sorter:
         class: '%pintushi_grid.extension.orm_sorter.class%'
         arguments:
@@ -61,21 +23,12 @@ services:
         tags:
             - { name: pintushi_grid.extension }
 
-    pintushi_grid.extension.action:
-        class: '%pintushi_grid.extension.action.class%'
+    pintushi_grid.extension.pager:
+        class: Pintushi\Bundle\GridBundle\Extension\Pager\PagerfantaExtension
         arguments:
-            - '@pintushi_grid.extension.action.factory'
-            - '@pintushi_grid.extension.action.metadata_factory'
-            - '@security.authorization_checker'
-            - '@pintushi_security.owner.ownership_query_helper'
+            - '@pintushi_grid.provider.state.sorters'
         tags:
             - { name: pintushi_grid.extension }
-
-    pintushi_grid.action.callback_provider:
-        class: Pintushi\Bundle\GridBundle\Extension\Action\DatagridCallbackActionProvider
-        tags:
-            - { name: pintushi_grid.extension.action.provider, priority: 255 }
-
 
     pintushi_grid.extension.toolbar:
         class: '%pintushi_grid.extension.toolbar.class%'
@@ -102,23 +55,6 @@ services:
         tags:
             - { name: pintushi_grid.extension }
 
-    pintushi_grid.extension.totals:
-        class: '%pintushi_grid.extension.totals.class%'
-        arguments:
-            - '@translator'
-            - '@pintushi_locale.formatter.number'
-            - '@pintushi_locale.formatter.date_time'
-            - '@pintushi_security.acl_helper'
-        tags:
-            - { name: pintushi_grid.extension }
-
-    pintushi_grid.extension.columns:
-        class: '%pintushi_grid.extension.columns.class%'
-        arguments:
-            - '@pintushi_grid.provider.state.columns'
-        tags:
-            - { name: pintushi_grid.extension }
-
     pintushi_grid.extension.mode:
         class: '%pintushi_grid.extension.mode.class%'
         tags:
@@ -142,26 +78,24 @@ services:
         tags:
             - { name: pintushi_grid.extension }
 
-    pintushi_grid.extension.field_acl:
-        class: Pintushi\Bundle\GridBundle\Extension\FieldAcl\FieldAclExtension
-        arguments:
-            - '@security.authorization_checker'
-            - '@pintushi_entity_config.config_manager'
-            - '@pintushi_security.owner.ownership_query_helper'
-        tags:
-            - { name: pintushi_grid.extension }
-
     pintushi_grid.extension.appearance:
         class: '%pintushi_grid.extension.appearance.class%'
         arguments:
-            - '@pintushi_grid.datagrid.appearance.configuration'
+            - '@pintushi_grid.grid.appearance.configuration'
             - '@translator'
         tags:
             - { name: pintushi_grid.extension }
 
-    # pintushi_grid.extension.feature:
-    #     class: Pintushi\Bundle\GridBundle\Extension\Feature\FeatureExtension
-    #     arguments:
-    #         - '@oro_featuretoggle.checker.feature_checker'
-    #     tags:
-    #         - { name: pintushi_grid.extension }
+    pintushi_grid.extension.column_state:
+        class: '%pintushi_grid.extension.column_state.class%'
+        arguments:
+            - '@pintushi_grid.provider.state.columns'
+        tags:
+            - { name: pintushi_grid.extension }
+
+    pintushi_grid.extension.columns:
+        class: '%pintushi_grid.extension.columns.class%'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pintushi_grid.extension }

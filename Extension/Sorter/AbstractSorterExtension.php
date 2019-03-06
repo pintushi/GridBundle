@@ -2,20 +2,20 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension\Sorter;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\MetadataObject;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
 use Pintushi\Bundle\GridBundle\Exception\LogicException;
 use Pintushi\Bundle\GridBundle\Extension\AbstractExtension;
-use Pintushi\Bundle\GridBundle\Extension\Formatter\Property\PropertyInterface;
+use Pintushi\Bundle\GridBundle\Extension\Columns\ColumnInterface;
 use Pintushi\Bundle\GridBundle\Extension\Toolbar\ToolbarExtension;
-use Pintushi\Bundle\GridBundle\Provider\State\DatagridStateProviderInterface;
+use Pintushi\Bundle\GridBundle\Provider\State\GridStateProviderInterface;
 
 /**
  * Applies sorters to datasource.
- * Updates datagrid metadata object with:
- * - initial sorters state - as per datagrid sorters configuration;
- * - sorters state - as per current state based on columns configuration, grid view settings and datagrid parameters;
+ * Updates grid metadata object with:
+ * - initial sorters state - as per grid sorters configuration;
+ * - sorters state - as per current state based on columns configuration, grid view settings and grid parameters;
  * - updates metadata with sorters config.
  */
 abstract class AbstractSorterExtension extends AbstractExtension
@@ -26,13 +26,13 @@ abstract class AbstractSorterExtension extends AbstractExtension
     public const DIRECTION_ASC = 'ASC';
     public const DIRECTION_DESC = 'DESC';
 
-    /** @var DatagridStateProviderInterface */
+    /** @var GridStateProviderInterface */
     private $sortersStateProvider;
 
     /**
-     * @param DatagridStateProviderInterface $sortersStateProvider
+     * @param GridStateProviderInterface $sortersStateProvider
      */
-    public function __construct(DatagridStateProviderInterface $sortersStateProvider)
+    public function __construct(GridStateProviderInterface $sortersStateProvider)
     {
         $this->sortersStateProvider = $sortersStateProvider;
     }
@@ -47,7 +47,7 @@ abstract class AbstractSorterExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(GridConfiguration $config)
     {
         $columns = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
@@ -59,7 +59,7 @@ abstract class AbstractSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(GridConfiguration $config)
     {
         $this->validateConfiguration(
             new Configuration(),
@@ -70,7 +70,7 @@ abstract class AbstractSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
+    public function visitDatasource(GridConfiguration $config, DatasourceInterface $datasource)
     {
         $sortersConfig = $this->getSorters($config);
         $sortersState = $this->sortersStateProvider->getStateFromParameters($config, $this->getParameters());
@@ -89,7 +89,7 @@ abstract class AbstractSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(GridConfiguration $config, MetadataObject $data)
     {
         $toolbarSort = $config->offsetGetByPath(Configuration::TOOLBAR_SORTING_PATH, false);
         $multiSort   = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
@@ -115,10 +115,10 @@ abstract class AbstractSorterExtension extends AbstractExtension
     }
 
     /**
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      * @param MetadataObject        $data
      */
-    protected function processColumns(DatagridConfiguration $config, MetadataObject $data)
+    protected function processColumns(GridConfiguration $config, MetadataObject $data)
     {
         $toolbarSort = $config->offsetGetByPath(Configuration::TOOLBAR_SORTING_PATH, false);
 
@@ -130,10 +130,10 @@ abstract class AbstractSorterExtension extends AbstractExtension
             if (!array_key_exists('name', $column) || !array_key_exists($column['name'], $sorters)) {
                 continue;
             }
-            if ($toolbarSort && array_key_exists(PropertyInterface::TYPE_KEY, $sorters[$column['name']])) {
+            if ($toolbarSort && array_key_exists(ColumnInterface::TYPE_KEY, $sorters[$column['name']])) {
                 $data->offsetSetByPath(
                     sprintf('[columns][%s][sortingType]', $key),
-                    $sorters[$column['name']][PropertyInterface::TYPE_KEY]
+                    $sorters[$column['name']][ColumnInterface::TYPE_KEY]
                 );
             }
             $data->offsetSetByPath(sprintf('[columns][%s][sortable]', $key), true);
@@ -149,10 +149,10 @@ abstract class AbstractSorterExtension extends AbstractExtension
     }
 
     /**
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      * @param MetadataObject        $data
      */
-    protected function setMetadataStates(DatagridConfiguration $config, MetadataObject $data)
+    protected function setMetadataStates(GridConfiguration $config, MetadataObject $data)
     {
         $sortersState = $this->sortersStateProvider->getState($config, $this->getParameters());
         $data->offsetAddToArray('state', ['sorters' => $sortersState]);
@@ -173,16 +173,16 @@ abstract class AbstractSorterExtension extends AbstractExtension
     /**
      * Retrieve and prepare list of sorters
      *
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      *
      * @return array
      */
-    protected function getSorters(DatagridConfiguration $config)
+    protected function getSorters(GridConfiguration $config)
     {
         $sorters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         foreach ($sorters as $name => $definition) {
-            if (isset($definition[PropertyInterface::DISABLED_KEY]) && $definition[PropertyInterface::DISABLED_KEY]) {
+            if (isset($definition[ColumnInterface::DISABLED_KEY]) && $definition[ColumnInterface::DISABLED_KEY]) {
                 // remove disabled sorter
                 unset($sorters[$name]);
             } else {

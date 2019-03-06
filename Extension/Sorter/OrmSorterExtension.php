@@ -3,16 +3,17 @@
 namespace Pintushi\Bundle\GridBundle\Extension\Sorter;
 
 use Doctrine\ORM\Query\Expr;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
 use Pintushi\Bundle\GridBundle\Datasource\Orm\OrmDatasource;
+use Pintushi\Bundle\GridBundle\Extension\Columns\ColumnInterface;
 
 class OrmSorterExtension extends AbstractSorterExtension
 {
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(GridConfiguration $config)
     {
         return
             $config->isOrmDatasource()
@@ -25,13 +26,13 @@ class OrmSorterExtension extends AbstractSorterExtension
     protected function addSorterToDatasource(array $sorter, $direction, DatasourceInterface $datasource)
     {
         /* @var OrmDatasource $datasource */
-        $datasource->getQueryBuilder()->addOrderBy($sorter['data_name'], $direction);
+        $datasource->getQueryBuilder()->addOrderBy($sorter[ColumnInterface::DATA_PATH_KEY], $direction);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
+    public function visitDatasource(GridConfiguration $config, DatasourceInterface $datasource)
     {
         parent::visitDatasource($config, $datasource);
 

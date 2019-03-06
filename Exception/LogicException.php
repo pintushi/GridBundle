@@ -2,6 +2,6 @@
 
 namespace Pintushi\Bundle\GridBundle\Exception;
 
-class LogicException extends \LogicException implements DatagridException
+class LogicException extends \LogicException implements GridException
 {
 }

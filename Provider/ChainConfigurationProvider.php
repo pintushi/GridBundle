@@ -43,7 +43,7 @@ class ChainConfigurationProvider implements ConfigurationProviderInterface
         }
 
         if ($foundProvider === null) {
-            throw new RuntimeException(sprintf('A configuration for "%s" datagrid was not found.', $gridName));
+            throw new RuntimeException(sprintf('A configuration for "%s" grid was not found.', $gridName));
         }
 
         return $foundProvider->getConfiguration($gridName);

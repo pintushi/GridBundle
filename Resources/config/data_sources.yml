@@ -10,7 +10,6 @@ services:
             - '@pintushi_grid.event.dispatcher'
             - '@pintushi_grid.datasource.orm.parameter_binder'
             - '@pintushi_entity.query_hint_resolver'
-            - '@pintushi_grid.orm.query_executor'
         tags:
             - { name: pintushi_grid.datasource, type: orm }
 
@@ -18,10 +17,6 @@ services:
         class: 'Pintushi\Bundle\GridBundle\Datasource\ArrayDatasource\ArrayDatasource'
         tags:
             - { name: pintushi_grid.datasource, type: array }
-
-    pintushi_grid.orm.query_executor:
-        class: Pintushi\Bundle\GridBundle\Datasource\Orm\QueryExecutor
-        public: false
 
     pintushi_grid.datasource.orm.parameter_binder:
         class: '%pintushi_grid.datasource.orm.parameter_binder.class%'

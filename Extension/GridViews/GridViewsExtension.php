@@ -3,9 +3,9 @@
 namespace Pintushi\Bundle\GridBundle\Extension\GridViews;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\MetadataObject;
-use Pintushi\Bundle\GridBundle\Datagrid\ParameterBag;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
+use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
 use Pintushi\Bundle\GridBundle\Entity\AbstractGridView;
 use Pintushi\Bundle\GridBundle\Event\GridViewsLoadEvent;
 use Pintushi\Bundle\GridBundle\Extension\AbstractExtension;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Adds grid views functionality to datagrids.
+ * Adds grid views functionality to grids.
  * Adds to parameters filters and sorters taken from actual grid view.
  */
 class GridViewsExtension extends AbstractExtension
@@ -85,7 +85,7 @@ class GridViewsExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(GridConfiguration $config)
     {
         return parent::isApplicable($config) && !$this->isDisabled();
     }
@@ -111,7 +111,7 @@ class GridViewsExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(GridConfiguration $config, MetadataObject $data)
     {
         $gridName = $config->getName();
 

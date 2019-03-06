@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension\Sorter;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Datasource\Orm\OrmQueryConfiguration as OrmQuery;
 use Pintushi\Bundle\GridBundle\Extension\AbstractExtension;
 use Oro\Component\DoctrineUtils\ORM\QueryHintResolver;
@@ -39,7 +39,7 @@ class HintExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(GridConfiguration $config)
     {
         return parent::isApplicable($config) && $config->isOrmDatasource();
     }
@@ -55,17 +55,17 @@ class HintExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(GridConfiguration $config)
     {
         $addHint = true;
         $resolvedHintName = $this->queryHintResolver->resolveHintName($this->hintName);
         $hints = $config->getHints();
         foreach ($hints as $hintKey => $hint) {
             if (is_array($hint)) {
-                $hintName = $this->getHintAttribute($hint, DatagridConfiguration::NAME_KEY);
+                $hintName = $this->getHintAttribute($hint, GridConfiguration::NAME_KEY);
                 if ($this->hintName === $hintName || $resolvedHintName === $hintName) {
                     $addHint = false;
-                    $hintValue = $this->getHintAttribute($hint, DatagridConfiguration::VALUE_KEY);
+                    $hintValue = $this->getHintAttribute($hint, GridConfiguration::VALUE_KEY);
                     if (false === $hintValue) {
                         // remove the hint if it was disabled
                         unset($hints[$hintKey]);

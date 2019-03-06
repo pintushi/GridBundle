@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Event;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Exception\InvalidArgumentException;
 use Pintushi\Bundle\GridBundle\Provider\SystemAwareResolver;
 use Symfony\Component\EventDispatcher\Event;
@@ -19,9 +19,9 @@ class EventDispatcher extends ImmutableEventDispatcher
      */
     public function dispatch($eventName, Event $event = null)
     {
-        /** @var DatagridConfiguration $config */
+        /** @var GridConfiguration $config */
         if ($event instanceof GridEventInterface) {
-            $config = $event->getDatagrid()->getConfig();
+            $config = $event->getGrid()->getConfig();
         } elseif ($event instanceof GridConfigurationEventInterface) {
             $config = $event->getConfig();
         } else {

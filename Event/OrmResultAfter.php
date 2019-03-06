@@ -3,23 +3,23 @@
 namespace Pintushi\Bundle\GridBundle\Event;
 
 use Doctrine\ORM\AbstractQuery;
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
-use Pintushi\Bundle\GridBundle\Datasource\ResultRecordInterface;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 use Symfony\Component\EventDispatcher\Event;
+use Pagerfanta\Pagerfanta;
 
 class OrmResultAfter extends Event implements GridEventInterface
 {
     const NAME = 'pintushi_grid.orm_datasource.result.after';
 
     /**
-     * @var DatagridInterface
+     * @var GridInterface
      */
-    protected $datagrid;
+    protected $grid;
 
     /**
-     * @var ResultRecordInterface[]
+     * @var Pagerfanta
      */
-    protected $records;
+    protected $data;
 
     /**
      * @var AbstractQuery
@@ -27,42 +27,42 @@ class OrmResultAfter extends Event implements GridEventInterface
     protected $query;
 
     /**
-     * @param DatagridInterface $datagrid
-     * @param array             $records
+     * @param GridInterface $grid
+     * @param array             $data
      * @param AbstractQuery     $query
      */
     public function __construct(
-        DatagridInterface $datagrid,
-        array $records = [],
+        GridInterface $grid,
+        Pagerfanta $data,
         AbstractQuery $query = null
     ) {
-        $this->datagrid = $datagrid;
-        $this->records  = $records;
+        $this->grid = $grid;
+        $this->data  = $data;
         $this->query    = $query;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDatagrid()
+    public function getGrid()
     {
-        return $this->datagrid;
+        return $this->grid;
     }
 
     /**
-     * @return ResultRecordInterface[]
+     * @return Pagerfanta
      */
-    public function getRecords()
+    public function getData()
     {
-        return $this->records;
+        return $this->data;
     }
 
     /**
-     * @param array $records
+     * @param array $data
      */
-    public function setRecords(array $records)
+    public function setData(Pagerfanta $data)
     {
-        $this->records = $records;
+        $this->data = $data;
     }
 
     /**

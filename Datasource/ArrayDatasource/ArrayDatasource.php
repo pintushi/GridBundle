@@ -2,13 +2,14 @@
 
 namespace Pintushi\Bundle\GridBundle\Datasource\ArrayDatasource;
 
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
-use Pintushi\Bundle\GridBundle\Datasource\ResultRecord;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 
 /**
- * This datasource allows to create datagrids from plain PHP arrays
- * To use it, you need to configure datagrid with datasource type: array
+ * This datasource allows to create grids from plain PHP arrays
+ * To use it, you need to configure grid with datasource type: array
  * And then set source array via grid listener
  */
 class ArrayDatasource implements DatasourceInterface
@@ -21,20 +22,15 @@ class ArrayDatasource implements DatasourceInterface
     protected $arraySource = [];
 
     /** {@inheritdoc} */
-    public function process(DatagridInterface $grid, array $config)
+    public function process(GridInterface $grid, array $config)
     {
         $grid->setDatasource(clone $this);
     }
 
     /** {@inheritdoc} */
-    public function getResults()
+    public function getData()
     {
-        $rows = [];
-        foreach ($this->arraySource as $result) {
-            $rows[] = new ResultRecord($result);
-        }
-
-        return $rows;
+        return new Pagerfanta(new ArrayAdapter($this->arraySource));
     }
 
     /**

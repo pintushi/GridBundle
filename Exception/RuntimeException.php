@@ -2,6 +2,6 @@
 
 namespace Pintushi\Bundle\GridBundle\Exception;
 
-class RuntimeException extends \RuntimeException implements DatagridException
+class RuntimeException extends \RuntimeException implements GridException
 {
 }

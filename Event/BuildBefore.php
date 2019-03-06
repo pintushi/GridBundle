@@ -2,39 +2,39 @@
 
 namespace Pintushi\Bundle\GridBundle\Event;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class BuildBefore
  * @package Pintushi\Bundle\GridBundle\Event
  *
- * This event dispatched before datagrid builder starts build datagrid
+ * This event dispatched before grid builder starts build grid
  * Listeners could apply validation of config and provide changes of config
  */
 class BuildBefore extends Event implements GridEventInterface, GridConfigurationEventInterface
 {
-    const NAME = 'pintushi_grid.datagrid.build.before';
+    const NAME = 'pintushi_grid.grid.build.before';
 
-    /** @var DatagridInterface */
-    protected $datagrid;
+    /** @var GridInterface */
+    protected $grid;
 
-    /** @var DatagridConfiguration */
+    /** @var GridConfiguration */
     protected $config;
 
-    public function __construct(DatagridInterface $datagrid, DatagridConfiguration $config)
+    public function __construct(GridInterface $grid, GridConfiguration $config)
     {
-        $this->datagrid   = $datagrid;
+        $this->grid   = $grid;
         $this->config     = $config;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDatagrid()
+    public function getGrid()
     {
-        return $this->datagrid;
+        return $this->grid;
     }
 
     /**

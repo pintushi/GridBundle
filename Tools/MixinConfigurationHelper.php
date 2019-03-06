@@ -2,7 +2,7 @@
 
 namespace Pintushi\Bundle\GridBundle\Tools;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Provider\ConfigurationProviderInterface;
 
 class MixinConfigurationHelper
@@ -29,12 +29,12 @@ class MixinConfigurationHelper
     }
 
     /**
-     * @param DatagridConfiguration $configuration
+     * @param GridConfiguration $configuration
      * @param string                $gridName
      *
-     * @return DatagridConfiguration
+     * @return GridConfiguration
      */
-    public function extendConfiguration(DatagridConfiguration $configuration, $gridName)
+    public function extendConfiguration(GridConfiguration $configuration, $gridName)
     {
         $gridConfiguration = $this->configurationProvider->getConfiguration($gridName);
         $basicAlias = $configuration->getOrmQuery()->getRootAlias();

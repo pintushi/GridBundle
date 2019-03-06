@@ -3,22 +3,22 @@
 namespace Pintushi\Bundle\GridBundle\Datasource\Orm;
 
 use Doctrine\ORM\QueryBuilder;
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
 use Pintushi\Bundle\GridBundle\Datasource\Orm\Configs\QueryBuilderProcessor;
 use Pintushi\Bundle\GridBundle\Datasource\ParameterBinderAwareInterface;
 use Pintushi\Bundle\GridBundle\Datasource\ParameterBinderInterface;
-use Pintushi\Bundle\GridBundle\Datasource\ResultRecord;
-use Pintushi\Bundle\GridBundle\Datasource\ResultRecordInterface;
 use Pintushi\Bundle\GridBundle\Event\OrmResultAfter;
 use Pintushi\Bundle\GridBundle\Event\OrmResultBefore;
 use Pintushi\Bundle\GridBundle\Event\OrmResultBeforeQuery;
 use Pintushi\Bundle\GridBundle\Exception\BadMethodCallException;
 use Oro\Component\DoctrineUtils\ORM\QueryHintResolver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 
 /**
- * Allows to create datagrids from ORM queries.
+ * Allows to create grids from ORM queries.
  */
 class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterface
 {
@@ -27,20 +27,14 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var QueryBuilder */
-    protected $countQb;
-
     /** @var array|null */
     protected $queryHints;
-
-    /** @var array */
-    protected $countQueryHints = [];
 
     /** @var QueryBuilderProcessor */
     protected $queryBuilderProcessor;
 
-    /** @var DatagridInterface */
-    protected $datagrid;
+    /** @var GridInterface */
+    protected $grid;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -51,51 +45,45 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
     /** @var QueryHintResolver */
     protected $queryHintResolver;
 
-    /** @var QueryExecutorInterface */
-    private $queryExecutor;
-
     /**
      * @param QueryBuilderProcessor $processor
      * @param EventDispatcherInterface $eventDispatcher
      * @param ParameterBinderInterface $parameterBinder
      * @param QueryHintResolver        $queryHintResolver
-     * @param QueryExecutorInterface   $queryExecutor
      */
     public function __construct(
         QueryBuilderProcessor $processor,
         EventDispatcherInterface $eventDispatcher,
         ParameterBinderInterface $parameterBinder,
-        QueryHintResolver $queryHintResolver,
-        QueryExecutorInterface $queryExecutor
+        QueryHintResolver $queryHintResolver
     ) {
         $this->queryBuilderProcessor = $processor;
         $this->eventDispatcher = $eventDispatcher;
         $this->parameterBinder = $parameterBinder;
         $this->queryHintResolver = $queryHintResolver;
-        $this->queryExecutor = $queryExecutor;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function process(DatagridInterface $grid, array $config)
+    public function process(GridInterface $grid, array $config)
     {
-        $this->datagrid = $grid;
+        $this->grid = $grid;
         $this->processConfigs($config);
         $grid->setDatasource(clone $this);
     }
 
     /**
      * You must avoid to make changes of QueryBuilder here
-     * because query was already used as is in datagrid extensions for example "PaginatorExtension"
+     * because query was already used as is in grid extensions for example "PaginatorExtension"
      *
-     * @return ResultRecordInterface[]
+     * @return Pagerfanta
      */
-    public function getResults()
+    public function getData()
     {
         $this->eventDispatcher->dispatch(
             OrmResultBeforeQuery::NAME,
-            new OrmResultBeforeQuery($this->datagrid, $this->qb)
+            new OrmResultBeforeQuery($this->grid, $this->qb)
         );
 
         $query = $this->qb->getQuery();
@@ -103,48 +91,26 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
 
         $this->eventDispatcher->dispatch(
             OrmResultBefore::NAME,
-            new OrmResultBefore($this->datagrid, $query)
+            new OrmResultBefore($this->grid, $query)
         );
 
-        $rows = $this->queryExecutor->execute($this->datagrid, $query);
+        $paginator = new Pagerfanta(new DoctrineORMAdapter($query, false, false));
+        $paginator->setNormalizeOutOfRangePages(true);
 
-        $records = [];
-        foreach ($rows as $row) {
-            $records[] = new ResultRecord($row);
-        }
-
-        $event = new OrmResultAfter($this->datagrid, $records, $query);
+        $event = new OrmResultAfter($this->grid, $paginator, $query);
         $this->eventDispatcher->dispatch(OrmResultAfter::NAME, $event);
 
-        return $event->getRecords();
+        return $paginator;
     }
 
     /**
-     * Gets datagrid this datasource belongs to.
+     * Gets grid this datasource belongs to.
      *
-     * @return DatagridInterface
+     * @return GridInterface
      */
-    public function getDatagrid(): DatagridInterface
+    public function getGrid(): GridInterface
     {
-        return $this->datagrid;
-    }
-
-    /**
-     * Returns QueryBuilder for count query if it was set
-     *
-     * @return QueryBuilder|null
-     */
-    public function getCountQb()
-    {
-        return $this->countQb;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCountQueryHints()
-    {
-        return $this->countQueryHints;
+        return $this->grid;
     }
 
     /**
@@ -183,19 +149,18 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
     /**
      * {@inheritdoc}
      */
-    public function bindParameters(array $datasourceToDatagridParameters, $append = true)
+    public function bindParameters(array $datasourceToGridParameters, $append = true)
     {
-        if (!$this->datagrid) {
+        if (!$this->grid) {
             throw new BadMethodCallException('Method is not allowed when datasource is not processed.');
         }
 
-        return $this->parameterBinder->bindParameters($this->datagrid, $datasourceToDatagridParameters, $append);
+        return $this->parameterBinder->bindParameters($this->grid, $datasourceToGridParameters, $append);
     }
 
     public function __clone()
     {
-        $this->qb      = clone $this->qb;
-        $this->countQb = $this->countQb ? clone $this->countQb : null;
+        $this->qb = clone $this->qb;
     }
 
     /**
@@ -206,6 +171,5 @@ class OrmDatasource implements DatasourceInterface, ParameterBinderAwareInterfac
         $this->qb = $this->queryBuilderProcessor->processQuery($config);
 
         $this->queryHints = $config['hints'] ?? [];
-        $this->countQueryHints = $config['count_hints'] ?? $this->queryHints;
     }
 }

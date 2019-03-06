@@ -19,19 +19,13 @@ class PintushiGridExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('columns.yml');
         $loader->load('extensions.yml');
         $loader->load('data_sources.yml');
-        $loader->load('formatters.yml');
-        $loader->load('actions.yml');
-        $loader->load('mass_actions.yml');
-        $loader->load('datagrid_state.yml');
+        $loader->load('grid_state.yml');
 
         if ($container->getParameter('kernel.debug')) {
             $loader->load('debug.yml');
-        }
-
-        if ($container->getParameter('kernel.environment') === 'test') {
-            // $loader->load('services_test.yml');
         }
 
         $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));

@@ -11,6 +11,6 @@ services:
         class: Pintushi\Bundle\GridBundle\EventListener\ContainerListener
         arguments:
             - '@pintushi_grid.config.dumper'
-            - '@service_container'
+            - '@pintushi_grid.configuration.provider'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

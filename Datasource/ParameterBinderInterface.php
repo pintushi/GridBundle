@@ -2,37 +2,37 @@
 
 namespace Pintushi\Bundle\GridBundle\Datasource;
 
-use Pintushi\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 
 /**
- * Binds parameters of datagrid to it's datasource
+ * Binds parameters of grid to it's datasource
  */
 interface ParameterBinderInterface
 {
     /**
-     * Binds datagrid parameters to datasource.
+     * Binds grid parameters to datasource.
      *
      * Example of usage:
      * <code>
-     *  // get parameter "name" from datagrid parameter bag and add it to datasource
-     *  $queryParameterBinder->bindParameters($datagrid, ['name']);
+     *  // get parameter "name" from grid parameter bag and add it to datasource
+     *  $queryParameterBinder->bindParameters($grid, ['name']);
      *
-     *  // get parameter "id" from datagrid parameter bag and add it to datasource as parameter "client_id"
-     *  $queryParameterBinder->bindParameters($datagrid, ['client_id' => 'id']);
+     *  // get parameter "id" from grid parameter bag and add it to datasource as parameter "client_id"
+     *  $queryParameterBinder->bindParameters($grid, ['client_id' => 'id']);
      *
-     *  // get parameter "email" from datagrid parameter bag and add it to datasource, all other existing
+     *  // get parameter "email" from grid parameter bag and add it to datasource, all other existing
      *  // parameters will be cleared
-     *  $queryParameterBinder->bindParameters($datagrid, ['email'], false);
+     *  $queryParameterBinder->bindParameters($grid, ['email'], false);
      * </code>
      *
      *
-     * @param DatagridInterface $datagrid
-     * @param array $datasourceToDatagridParameters
+     * @param GridInterface $grid
+     * @param array $datasourceToGridParameters
      * @param bool $append
      */
     public function bindParameters(
-        DatagridInterface $datagrid,
-        array $datasourceToDatagridParameters,
+        GridInterface $grid,
+        array $datasourceToGridParameters,
         $append = true
     );
 }

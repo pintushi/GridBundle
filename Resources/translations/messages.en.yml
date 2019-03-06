@@ -5,8 +5,8 @@ pintushi_grid:
     label_add_filter: Manage filters
     label_loading_mask: "Loading . . ."
     label_reset_button: "Reset Filter"
-oro:
-    datagrid:
+pintushi:
+    grid:
         gridview:
             entity_label: Grid view
             entity_plural_label: Grid views
@@ -38,7 +38,6 @@ oro:
         pagesize:
             label: View per page
             labelShort: Per page
-    grid:
         mass_action:
             label: Mass Actions
             button_label: "..."
@@ -55,7 +54,7 @@ oro:
                 success_message: "{0} No entities were deleted|{1} One entity was deleted|]1,Inf[ %count% entities have been deleted successfully"
             edit:
                 success_message: "{0} No entities were edited|{1} One entity was edited|]1,Inf[ %count% entities were edited"
-        datagrid.page_size.all: All
+        grid.page_size.all: All
         export.csv: CSV
         export.xlsx: XLSX
         open_link: Open

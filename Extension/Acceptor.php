@@ -2,14 +2,14 @@
 
 namespace Pintushi\Bundle\GridBundle\Extension;
 
-use Pintushi\Bundle\GridBundle\Datagrid\Common\DatagridConfiguration;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\MetadataObject;
-use Pintushi\Bundle\GridBundle\Datagrid\Common\ResultsObject;
+use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
+use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
+use Pintushi\Bundle\GridBundle\Grid\Common\ResultsObject;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
 
 class Acceptor
 {
-    /** @var DatagridConfiguration */
+    /** @var GridConfiguration */
     protected $config;
 
     /** @var ExtensionVisitorInterface[] */
@@ -60,7 +60,7 @@ class Acceptor
     }
 
     /**
-     * Adds an extension that applicable to datagrid
+     * Adds an extension that applicable to grid
      *
      * @param ExtensionVisitorInterface $extension
      *
@@ -93,7 +93,7 @@ class Acceptor
     }
 
     /**
-     * Returns extensions applicable to datagrid
+     * Returns extensions applicable to grid
      *
      * @return ExtensionVisitorInterface[]
      */
@@ -105,11 +105,11 @@ class Acceptor
     /**
      * Setter for config
      *
-     * @param DatagridConfiguration $config
+     * @param GridConfiguration $config
      *
      * @return mixed
      */
-    public function setConfig(DatagridConfiguration $config)
+    public function setConfig(GridConfiguration $config)
     {
         $this->config = $config;
 
@@ -119,7 +119,7 @@ class Acceptor
     /**
      * Getter for config
      *
-     * @return DatagridConfiguration
+     * @return GridConfiguration
      */
     public function getConfig()
     {

@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class ConfigurationPass implements CompilerPassInterface
 {
-    const BUILDER_SERVICE_ID        = 'pintushi_grid.datagrid.builder';
+    const BUILDER_SERVICE_ID        = 'pintushi_grid.grid.builder';
     const PROVIDER_SERVICE_ID       = 'pintushi_grid.configuration.provider';
     const CHAIN_PROVIDER_SERVICE_ID = 'pintushi_grid.configuration.provider.chain';
 
@@ -26,7 +26,7 @@ class ConfigurationPass implements CompilerPassInterface
     }
 
     /**
-     * Register all datagrid configuration providers
+     * Register all grid configuration providers
      *
      * @param ContainerBuilder $container
      */
