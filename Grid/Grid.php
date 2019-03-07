@@ -7,9 +7,6 @@ use Pintushi\Bundle\GridBundle\Grid\Common\MetadataObject;
 use Pintushi\Bundle\GridBundle\Grid\Common\ResultsObject;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
 use Pintushi\Bundle\GridBundle\Extension\Acceptor;
-use Pagerfanta\Pagerfanta;
-use Hateoas\Representation\Factory\PagerfantaFactory;
-use Hateoas\Configuration\Route;
 
 class Grid implements GridInterface
 {
