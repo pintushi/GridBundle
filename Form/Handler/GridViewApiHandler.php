@@ -4,7 +4,7 @@ namespace Pintushi\Bundle\GridBundle\Form\Handler;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Pintushi\Bundle\GridBundle\Entity\AbstractGridView;
-use Pintushi\Bundle\GridBundle\Entity\Manager\GridViewManager;
+use Pintushi\Bundle\GridBundle\Manager\GridViewManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

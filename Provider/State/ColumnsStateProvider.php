@@ -4,7 +4,7 @@ namespace Pintushi\Bundle\GridBundle\Provider\State;
 
 use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
-use Pintushi\Bundle\GridBundle\Entity\Manager\GridViewManager;
+use Pintushi\Bundle\GridBundle\Manager\GridViewManager;
 use Pintushi\Bundle\GridBundle\Extension\Columns\ColumnStateExtension;
 use Pintushi\Bundle\GridBundle\Extension\Columns\Configuration;
 use Pintushi\Bundle\GridBundle\Tools\GridParametersHelper;

@@ -7,7 +7,7 @@ use Pintushi\Bundle\UserBundle\Entity\AbstractUser;
 use Pintushi\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity(repositoryClass="Pintushi\Bundle\GridBundle\Entity\Repository\GridViewUserRepository")
+ * @ORM\Entity(repositoryClass="Pintushi\Bundle\GridBundle\Repository\GridViewUserRepository")
  */
 class GridViewUser extends AbstractGridViewUser
 {

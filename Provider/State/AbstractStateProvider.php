@@ -5,7 +5,7 @@ namespace Pintushi\Bundle\GridBundle\Provider\State;
 use Pintushi\Bundle\GridBundle\Grid\Common\GridConfiguration;
 use Pintushi\Bundle\GridBundle\Grid\ParameterBag;
 use Pintushi\Bundle\GridBundle\Entity\AbstractGridView;
-use Pintushi\Bundle\GridBundle\Entity\Manager\GridViewManager;
+use Pintushi\Bundle\GridBundle\Manager\GridViewManager;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\GridViewsExtension;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\View;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\ViewInterface;

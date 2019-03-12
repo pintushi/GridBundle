@@ -1,6 +1,6 @@
 <?php
 
-namespace Pintushi\Bundle\GridBundle\Entity\Repository;
+namespace Pintushi\Bundle\GridBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;

@@ -3,9 +3,9 @@
 namespace Pintushi\Bundle\GridBundle\EventListener;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pintushi\Bundle\GridBundle\Entity\Manager\AppearanceTypeManager;
-use Pintushi\Bundle\GridBundle\Entity\Manager\GridViewManager;
-use Pintushi\Bundle\GridBundle\Entity\Repository\GridViewRepository;
+use Pintushi\Bundle\GridBundle\Manager\AppearanceTypeManager;
+use Pintushi\Bundle\GridBundle\Manager\GridViewManager;
+use Pintushi\Bundle\GridBundle\Repository\GridViewRepository;
 use Pintushi\Bundle\GridBundle\Event\GridViewsLoadEvent;
 use Pintushi\Bundle\GridBundle\Extension\Appearance\Configuration;
 use Pintushi\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;

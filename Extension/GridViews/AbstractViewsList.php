@@ -13,7 +13,7 @@ abstract class AbstractViewsList
 
     /** @var null|ArrayCollection */
     protected $views = null;
-    
+
     /** @var array */
     protected $systemViews = [];
 

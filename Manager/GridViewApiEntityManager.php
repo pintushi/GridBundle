@@ -1,6 +1,6 @@
 <?php
 
-namespace Pintushi\Bundle\GridBundle\Entity\Manager;
+namespace Pintushi\Bundle\GridBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\ViewInterface;

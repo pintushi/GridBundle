@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="Pintushi\Bundle\GridBundle\Entity\Repository\GridViewRepository")
+ * @ORM\Entity(repositoryClass="Pintushi\Bundle\GridBundle\Repository\GridViewRepository")
  * @Config(
  *      defaultValues={
  *          "ownership"={

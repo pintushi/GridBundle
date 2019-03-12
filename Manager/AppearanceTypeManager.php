@@ -1,6 +1,6 @@
 <?php
 
-namespace Pintushi\Bundle\GridBundle\Entity\Manager;
+namespace Pintushi\Bundle\GridBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Pintushi\Bundle\GridBundle\Entity\AppearanceType;

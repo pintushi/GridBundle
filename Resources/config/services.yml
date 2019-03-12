@@ -20,13 +20,22 @@ parameters:
     pintushi_grid.event_listener.grid_views_load.class:            Pintushi\Bundle\GridBundle\EventListener\GridViewsLoadListener
     pintushi_grid.form.type.grid_view_type.class:                  Pintushi\Bundle\GridBundle\Form\Type\GridViewType
     pintushi_grid.form.type.sorting_type.class:                    Pintushi\Bundle\GridBundle\Form\Type\GridSortingType
-    pintushi_grid.grid_view.manager.api.class:                     Pintushi\Bundle\GridBundle\Entity\Manager\GridViewApiEntityManager
+    pintushi_grid.grid_view.manager.api.class:                     Pintushi\Bundle\GridBundle\Manager\GridViewApiEntityManager
     pintushi_grid.grid_view.entity.class:                          Pintushi\Bundle\GridBundle\Entity\GridView
     pintushi_grid.grid_view_user.entity.class:                     Pintushi\Bundle\GridBundle\Entity\GridViewUser
     pintushi_grid.grid_view.form.handler.api.class:                Pintushi\Bundle\GridBundle\Form\Handler\GridViewApiHandler
     pintushi_grid.choice.helper.class:                             Pintushi\Bundle\GridBundle\Tools\ChoiceFieldHelper
 
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Pintushi\Bundle\GridBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+
     Pintushi\Bundle\GridBundle\Grid\Manager:
         class: '%pintushi_grid.grid.manager.class%'
         arguments:
@@ -144,7 +153,7 @@ services:
             - { name: form.type, alias: pintushi_grid_sorting }
 
     pintushi_grid.grid_view.manager:
-        class: Pintushi\Bundle\GridBundle\Entity\Manager\GridViewManager
+        class: Pintushi\Bundle\GridBundle\Manager\GridViewManager
         public: true
         arguments:
             - '@pintushi_security.acl_helper'
@@ -152,7 +161,7 @@ services:
             - '@pintushi_grid.grid.manager'
 
     pintushi_grid.appearance_type.manager:
-        class: Pintushi\Bundle\GridBundle\Entity\Manager\AppearanceTypeManager
+        class: Pintushi\Bundle\GridBundle\Manager\AppearanceTypeManager
         arguments:
             - '@doctrine.orm.entity_manager'
 
@@ -160,14 +169,6 @@ services:
         class: Oro\Component\DependencyInjection\ServiceLink
         tags:
             - { name: service_link,  service: pintushi_grid.grid_view.manager }
-
-    # pintushi_grid.grid_view.manager.api:
-    #     class: '%pintushi_grid.grid_view.manager.api.class%'
-    #     parent: oro_soap.manager.entity_manager.abstract
-    #     arguments:
-    #         - '%pintushi_grid.grid_view.entity.class%'
-    #         - '@doctrine.orm.entity_manager'
-    #         - '@pintushi_grid.grid_view.manager'
 
     pintushi_grid.form.grid_view.api:
         class: Symfony\Component\Form\Form
@@ -215,7 +216,6 @@ services:
         class: 'Pintushi\Bundle\GridBundle\Tools\GridRouteHelper'
         arguments:
             - '@router.default'
-
 
     pintushi_grid.multi_grid_provider:
         class: Pintushi\Bundle\GridBundle\Provider\MultiGridProvider

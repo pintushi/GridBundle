@@ -4,12 +4,12 @@ namespace Pintushi\Bundle\GridBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\View;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\ViewInterface;
 use Pintushi\Bundle\OrganizationBundle\Entity\Organization;
 use Pintushi\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Pintushi\Bundle\UserBundle\Entity\AbstractUser;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()

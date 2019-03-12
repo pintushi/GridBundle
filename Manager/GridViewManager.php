@@ -1,6 +1,6 @@
 <?php
 
-namespace Pintushi\Bundle\GridBundle\Entity\Manager;
+namespace Pintushi\Bundle\GridBundle\Manager;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -9,8 +9,8 @@ use Pintushi\Bundle\GridBundle\Grid\Manager;
 use Pintushi\Bundle\GridBundle\Entity\AbstractGridViewUser;
 use Pintushi\Bundle\GridBundle\Entity\GridView;
 use Pintushi\Bundle\GridBundle\Entity\GridViewUser;
-use Pintushi\Bundle\GridBundle\Entity\Repository\GridViewRepository;
-use Pintushi\Bundle\GridBundle\Entity\Repository\GridViewUserRepository;
+use Pintushi\Bundle\GridBundle\Repository\GridViewRepository;
+use Pintushi\Bundle\GridBundle\Repository\GridViewUserRepository;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\GridViewsExtension;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\View;
 use Pintushi\Bundle\GridBundle\Extension\GridViews\ViewInterface;
