@@ -1,0 +1,41 @@
+api:
+    resources:
+        Pintushi\Bundle\GridBundle\Entity\GridView:
+            scope: pintushi_grid
+            short_name: gridview
+            normalization_context:
+                groups: ['GridView']
+            route_prefix: /admin
+            validation_groups: ['pintushi']
+            form: 'Pintushi\Bundle\GridBundle\Form\Type\GridViewType'
+            operations:
+                create:
+                    action: create
+                    methods: ['POST']
+                    access_control: is_granted('pintushi_grid_gridview_create')
+                    controller: Pintushi\Bundle\GridBundle\Controller\GridViewController::handle
+                delete:
+                    action: delete
+                    access_control: is_granted('pintushi_grid_gridview_delete', object)
+                update:
+                    action: update
+                    access_control: is_granted('pintushi_grid_gridview_edit', object)
+                    controller: Pintushi\Bundle\GridBundle\Controller\GridViewController::handle
+                set_default:
+                    action: view
+                    path: '/gridviews/{id}/default/{default}/grid-name/{gridName}'
+                    requirements:
+                        id: '.+'
+                        default: '\d+'
+                        gridName: '.+'
+                    resource_provider:
+                        id: 'pintushi_grid.grid_view.manager'
+                        method: 'getView'
+                        arguments:
+                            id: $id
+                            default: $default
+                            gridName: $gridName
+                    defaults:
+                        default: false
+                        gridName: ~
+                    access_control: is_granted('pintushi_grid_gridview_view')

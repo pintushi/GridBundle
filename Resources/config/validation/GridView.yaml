@@ -1,0 +1,9 @@
+Pintushi\Bundle\GridBundle\Entity\GridView:
+  properties:
+      name:
+          - NotBlank: { groups: ['pintushi'] }
+      type:
+          - NotBlank: { groups: ['pintushi'] }
+      gridName:
+          - NotBlank: { groups: ['pintushi'] }
+

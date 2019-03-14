@@ -3,6 +3,8 @@
 namespace Pintushi\Bundle\GridBundle\Form\Type;
 
 use Pintushi\Bundle\GridBundle\Entity\GridView;
+use Pintushi\Bundle\GridBundle\Entity\AppearanceType;
+use Pintushi\Bundle\FormBundle\Form\Type\JsonType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -25,39 +27,34 @@ class GridViewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label', TextType::class, [
-                'property_path' => 'name',
+            ->add('name', TextType::class, [
+                'label' => 'pintushi.grid.gridview.name',
             ])
-            ->add('is_default', CheckboxType::class, [
+            ->add('isDefault', CheckboxType::class, [
                 'required' => false,
                 'mapped'   => false,
             ])
             ->add('type', ChoiceType::class, [
                 'choices' => GridView::getTypes(),
             ])
-            ->add('grid_name', TextType::class, [
+            ->add('gridName', TextType::class, [
                 'property_path' => 'gridName',
             ])
-            ->add(
-                'appearanceType',
-                EntityType::class,
-                [
-                    'class' => 'PintushiGridBundle:AppearanceType',
-                    'property_path' => 'appearanceType',
-                    'required' => false,
-                ]
-            )
-            ->add('appearanceData', TextType::class, [
-                'property_path' => 'appearanceData',
+            ->add('appearanceType', EntityType::class, [
+                'class' => AppearanceType::class,
+                'property_path' => 'appearanceType',
+                'required' => false,
+            ])
+            ->add('appearanceData', JsonType::class, [
                 'empty_data'    => [],
                 'required' => false,
             ])
-            ->add('filters', null, [
+            ->add('filters', JsonType::class, [
                 'property_path' => 'filtersData',
                 'empty_data'    => [],
             ])
             ->add('sorters', CollectionType::class, [
-                'property_path'  => 'sorters_data',
+                'property_path'  => 'sortersData',
                 'error_bubbling' => false,
                 'allow_add'      => true,
                 'allow_delete'   => true,
@@ -69,8 +66,8 @@ class GridViewType extends AbstractType
                     ],
                 ],
             ])
-            ->add('columns', null, [
-                'property_path' => 'columns_data',
+            ->add('columns', JsonType::class, [
+                'property_path' => 'columnsData',
                 'empty_data'    => []
             ]);
     }
@@ -81,17 +78,9 @@ class GridViewType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Pintushi\Bundle\GridBundle\Entity\AbstractGridView',
-            'csrf_protection' => false,
+            'data_class' => GridView::class,
+            'ownership_disabled' => true
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

@@ -1,0 +1,44 @@
+Pintushi\Bundle\GridBundle\Entity\AbstractGridView:
+    exclusion_policy: ALL
+    xml_root_name: grid_view
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: ['GridView']
+        name:
+            expose: true
+            type: string
+            xml_attribute: true
+            groups: ['GridView']
+        type:
+            expose: true
+            type: string
+            xml_attribute: true
+            groups: ['GridView']
+        filtersData:
+            expose: true
+            type: array
+            xml_attribute: true
+            groups: ['GridView']
+        sortersData:
+            expose: true
+            type: array
+            xml_attribute: true
+            groups: ['GridView']
+        columnsData:
+            expose: true
+            type: array
+            xml_attribute: true
+            groups: ['GridView']
+        gridName:
+            expose: true
+            type: string
+            xml_attribute: true
+            groups: ['GridView']
+        appearanceData:
+            expose: true
+            type: array
+            xml_attribute: true
+            groups: ['GridView']

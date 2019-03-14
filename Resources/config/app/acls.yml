@@ -1,10 +1,4 @@
 acls:
-    pintushi_grid_gridview_view:
-        type: entity
-        class: PintushiGridBundle:GridView
-        permission: VIEW
-        group_name: ""
-
     pintushi_grid_gridview_publish:
         label: pintushi.grid.action.gridview_create_public.label
         description: pintushi.grid.action.gridview_create_public.description
@@ -12,3 +6,31 @@ acls:
         group_name: ""
         bindings: ~
         category: "application"
+
+    pintushi_grid_gridview_create:
+        type: entity
+        class: Pintushi\Bundle\GridBundle\Entity\GridView
+        permission: CREATE
+        label: "创建GridView"
+        group_name: ""
+
+    pintushi_grid_gridview_edit:
+        type: entity
+        class: Pintushi\Bundle\GridBundle\Entity\GridView
+        permission: EDIT
+        label: "编辑GridView"
+        group_name: ""
+
+    pintushi_grid_gridview_delete:
+        type: entity
+        class: Pintushi\Bundle\GridBundle\Entity\GridView
+        permission: DELETE
+        label: "删除GridView"
+        group_name: ""
+
+    pintushi_grid_gridview_view:
+        type: entity
+        class: Pintushi\Bundle\GridBundle\Entity\GridView
+        permission: VIEW
+        label: "查看GridView"
+        group_name: ""

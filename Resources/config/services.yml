@@ -20,10 +20,8 @@ parameters:
     pintushi_grid.event_listener.grid_views_load.class:            Pintushi\Bundle\GridBundle\EventListener\GridViewsLoadListener
     pintushi_grid.form.type.grid_view_type.class:                  Pintushi\Bundle\GridBundle\Form\Type\GridViewType
     pintushi_grid.form.type.sorting_type.class:                    Pintushi\Bundle\GridBundle\Form\Type\GridSortingType
-    pintushi_grid.grid_view.manager.api.class:                     Pintushi\Bundle\GridBundle\Manager\GridViewApiEntityManager
     pintushi_grid.grid_view.entity.class:                          Pintushi\Bundle\GridBundle\Entity\GridView
     pintushi_grid.grid_view_user.entity.class:                     Pintushi\Bundle\GridBundle\Entity\GridViewUser
-    pintushi_grid.grid_view.form.handler.api.class:                Pintushi\Bundle\GridBundle\Form\Handler\GridViewApiHandler
     pintushi_grid.choice.helper.class:                             Pintushi\Bundle\GridBundle\Tools\ChoiceFieldHelper
 
 services:
@@ -152,7 +150,9 @@ services:
         tags:
             - { name: form.type, alias: pintushi_grid_sorting }
 
-    pintushi_grid.grid_view.manager:
+    pintushi_grid.grid_view.manager: '@Pintushi\Bundle\GridBundle\Manager\GridViewManager'
+
+    Pintushi\Bundle\GridBundle\Manager\GridViewManager:
         class: Pintushi\Bundle\GridBundle\Manager\GridViewManager
         public: true
         arguments:
@@ -169,22 +169,6 @@ services:
         class: Oro\Component\DependencyInjection\ServiceLink
         tags:
             - { name: service_link,  service: pintushi_grid.grid_view.manager }
-
-    pintushi_grid.form.grid_view.api:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', createNamed]
-        arguments:
-            - ~
-            - Pintushi\Bundle\GridBundle\Form\Type\GridViewType
-
-    pintushi_grid.grid_view.form.handler.api:
-        class: '%pintushi_grid.grid_view.form.handler.api.class%'
-        arguments:
-            - '@pintushi_grid.form.grid_view.api'
-            - '@request_stack'
-            - '@doctrine'
-            - '@pintushi_grid.grid_view.manager'
-            - '@security.token_storage'
 
     pintushi_grid.grid_configuration.helper:
         class: Pintushi\Bundle\GridBundle\Tools\GridConfigurationHelper
@@ -239,3 +223,6 @@ services:
         public: false
         arguments:
             - '@router'
+
+    Pintushi\Bundle\GridBundle\Form\Type\GridViewType: ~
+
