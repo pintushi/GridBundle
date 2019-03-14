@@ -8,6 +8,7 @@ api:
             route_prefix: /admin
             validation_groups: ['pintushi']
             form: 'Pintushi\Bundle\GridBundle\Form\Type\GridViewType'
+            repository_class: 'Pintushi\Bundle\GridBundle\Repository\GridViewRepository'
             operations:
                 create:
                     action: create

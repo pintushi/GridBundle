@@ -59,4 +59,34 @@ class GridController extends Controller
 
         return new JsonResponse($filterData);
     }
+
+
+    /**
+     * @Route(
+     *     "/{gridName}/metadata",
+     *     name="pintushi_grid_metadata",
+     *     options={
+     *         "expose"=true
+     *     }
+     * )
+     */
+    public function gridMetadataAction(Request $request, $gridName)
+    {
+        $gridManager = $this->gridManager;
+        $gridConfig  = $gridManager->getConfigurationForGrid($gridName);
+        $acl         = $gridConfig->getAclResource();
+
+        if ($acl && !$this->isGranted($acl)) {
+            throw new AccessDeniedException('Access denied.');
+        }
+
+        $grid = $gridManager->getGridByRequestParams($gridName);
+        $meta = $grid->getResolvedMetadata();
+
+        return new JsonResponse([
+            'filters' => $meta['filters'],
+            'columns' => $meta['columns'],
+            'grid_views' => $meta['gridViews'],
+        ]);
+    }
 }
