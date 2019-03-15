@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode(static::GRID_APPEARANCE_TYPE)
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode(static::LABEL_KEY)->defaultValue('pintushi.datagrid.appearance.grid')->end()
+                        ->scalarNode(static::LABEL_KEY)->defaultValue('pintushi.grid.appearance.grid')->end()
                         ->scalarNode(static::ICON_KEY)->defaultValue('fa-table')->end()
                         ->scalarNode(static::DEFAULT_PROCESSING_KEY)->defaultValue(true)->end()
                     ->end()
