@@ -17,9 +17,8 @@
         "pintushi/security-bundle": "^1.0@dev"
     },
     "autoload": {
-        "psr-0": { "Pintushi\\Bundle\\GridBundle": "" }
+        "psr-4": { "Pintushi\\Bundle\\GridBundle\\": "" }
     },
-    "target-dir": "Pintushi/Bundle/GridBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
