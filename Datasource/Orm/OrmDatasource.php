@@ -14,7 +14,7 @@ use Pintushi\Bundle\GridBundle\Event\OrmResultBeforeQuery;
 use Pintushi\Bundle\GridBundle\Exception\BadMethodCallException;
 use Oro\Component\DoctrineUtils\ORM\QueryHintResolver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pintushi\Bundle\GridBundle\Datasource\Orm\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
 /**

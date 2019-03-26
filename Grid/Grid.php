@@ -89,7 +89,9 @@ class Grid implements GridInterface
             return $this->cachedResult;
         }
         /** @var ResultsObject*/
-        $this->cachedResult = ResultsObject::create(['data' => $this->getAcceptedDatasource()->getData()]);
+        $this->cachedResult = ResultsObject::create([
+            'data' => $this->getAcceptedDatasource()->getData()
+        ]);
 
         $this->acceptor->acceptResult($this->cachedResult);
 

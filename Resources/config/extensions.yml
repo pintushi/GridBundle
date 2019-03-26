@@ -99,3 +99,11 @@ services:
             - '@translator'
         tags:
             - { name: pintushi_grid.extension }
+
+    pintushi_grid.extension.actions:
+        class: 'Pintushi\Bundle\GridBundle\Extension\Action\ActionExtension'
+        arguments:
+            - '@translator'
+            - '@security.authorization_checker'
+        tags:
+            - { name: pintushi_grid.extension }
