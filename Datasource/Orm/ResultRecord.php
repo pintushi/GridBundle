@@ -56,9 +56,9 @@ class ResultRecord
     /**
      * {@inheritdoc}
      */
-    public function getValue($name)
+    public function getValue($name, $default = null)
     {
-        return $this->getPropertyAccessor()->getValue($this->metas, $name);
+        return $this->getPropertyAccessor()->getValue($this->metas, $name) ?? $default;
     }
 
     /**
