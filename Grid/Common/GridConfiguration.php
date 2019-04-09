@@ -26,7 +26,7 @@ class GridConfiguration extends ConfigObject
     const DATASOURCE_TYPE_PATH = '[source][type]';
     const BASE_DATAGRID_CLASS_PATH  = '[options][base_grid_class]';
 
-    const EXTENDED_ENTITY_NAME = 'extended_entity_name';
+    const ENTITY_CLASS = 'ENTITY_CLASS';
 
     // Use this option as workaround for http://www.doctrine-project.org/jira/browse/DDC-2794
     const DATASOURCE_SKIP_COUNT_WALKER_PATH = '[options][skip_count_walker]';
@@ -117,9 +117,9 @@ class GridConfiguration extends ConfigObject
      *
      * @return string|null
      */
-    public function getExtendedEntityClassName()
+    public function getEntityClass()
     {
-        return $this->offsetGetOr(self::EXTENDED_ENTITY_NAME);
+        return $this->offsetGetOr(self::ENTITY_CLASS);
     }
 
     /**
@@ -129,12 +129,12 @@ class GridConfiguration extends ConfigObject
      *
      * @return self
      */
-    public function setExtendedEntityClassName($className)
+    public function setEntityClass($className)
     {
         if ($className) {
-            $this->offsetSet(self::EXTENDED_ENTITY_NAME, $className);
+            $this->offsetSet(self::ENTITY_CLASS, $className);
         } else {
-            $this->offsetUnset(self::EXTENDED_ENTITY_NAME);
+            $this->offsetUnset(self::ENTITY_CLASS);
         }
 
         return $this;

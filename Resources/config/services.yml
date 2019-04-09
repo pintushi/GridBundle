@@ -170,11 +170,6 @@ services:
         tags:
             - { name: service_link,  service: pintushi_grid.grid_view.manager }
 
-    pintushi_grid.grid_configuration.helper:
-        class: Pintushi\Bundle\GridBundle\Tools\GridConfigurationHelper
-        arguments:
-            - '@pintushi_entity.orm.entity_class_resolver'
-
     pintushi_grid.mixin_configuration.helper:
         class: Pintushi\Bundle\GridBundle\Tools\MixinConfigurationHelper
         arguments:

@@ -169,7 +169,7 @@ class Builder
 
         $this->dataSources[$sourceType]->process(
             $grid,
-            $config->offsetGetByPath(GridConfiguration::DATASOURCE_PATH, [])
+            ['entity' => $config->getEntityClass()] + $config->offsetGetByPath(GridConfiguration::DATASOURCE_PATH, [])
         );
     }
 }
