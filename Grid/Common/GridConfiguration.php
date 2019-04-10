@@ -26,7 +26,7 @@ class GridConfiguration extends ConfigObject
     const DATASOURCE_TYPE_PATH = '[source][type]';
     const BASE_DATAGRID_CLASS_PATH  = '[options][base_grid_class]';
 
-    const ENTITY_CLASS = 'ENTITY_CLASS';
+    const ENTITY_CLASS = 'entity_class';
 
     // Use this option as workaround for http://www.doctrine-project.org/jira/browse/DDC-2794
     const DATASOURCE_SKIP_COUNT_WALKER_PATH = '[options][skip_count_walker]';
