@@ -114,7 +114,6 @@ class ActionExtension extends AbstractExtension
 
                 $aclResource = $actionConfig[Configuration::ACL_KEY];
                 if ($aclResource && !$this->authorizationChecker->isGranted($aclResource)) {
-                    dump($aclResource);
                     unset($actionsMetadata[$groupName][$actionName]);
                 }
             }
