@@ -73,6 +73,10 @@ class ColumnsExtension extends AbstractExtension
             $metadata['label']    = $metadata[ColumnInterface::TRANSLATABLE_KEY]
                 ? $this->translator->trans($metadata['label'])
                 : $metadata['label'];
+            if (!isset($metadata[ColumnInterface::DATA_PATH_KEY]) ) {
+                $metadata[ColumnInterface::DATA_PATH_KEY] = $name;
+            }
+
             $columnsMetadata[] = $metadata;
         }
 
