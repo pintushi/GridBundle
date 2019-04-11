@@ -4,7 +4,7 @@ namespace Pintushi\Bundle\GridBundle\Datasource\ArrayDatasource;
 
 use Pintushi\Bundle\GridBundle\Grid\GridInterface;
 use Pintushi\Bundle\GridBundle\Datasource\DatasourceInterface;
-use Pagerfanta\Adapter\ArrayAdapter;
+use Pintushi\Bundle\GridBundle\Datasource\ArrayDatasource\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 
 /**

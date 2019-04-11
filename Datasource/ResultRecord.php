@@ -1,6 +1,6 @@
 <?php
 
-namespace Pintushi\Bundle\GridBundle\Datasource\Orm;
+namespace Pintushi\Bundle\GridBundle\Datasource;
 
 use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
